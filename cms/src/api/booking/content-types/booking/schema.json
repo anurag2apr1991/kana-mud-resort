@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "bookings",
+  "info": {
+    "singularName": "booking",
+    "pluralName": "bookings",
+    "displayName": "Booking links",
+    "description": "Primary and secondary booking URLs shown across the site"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "primaryLabel": {
+      "type": "string",
+      "default": "Book a stay"
+    },
+    "primaryUrl": {
+      "type": "string",
+      "default": "https://example.com/book"
+    },
+    "secondaryLabel": {
+      "type": "string",
+      "default": "WhatsApp concierge"
+    },
+    "secondaryUrl": {
+      "type": "string"
+    },
+    "footerNote": {
+      "type": "string",
+      "default": "Best rates when you book direct."
+    }
+  }
+}

@@ -1,0 +1,41 @@
+# Root + all packages
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env & secrets (keep *.example)
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Next.js (frontend)
+frontend/.next/
+frontend/out/
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# Strapi (cms)
+cms/dist/
+cms/build/
+cms/.strapi/
+cms/.strapi-updater.json
+cms/.strapi-cloud.json
+cms/.tmp/
+cms/public/uploads/*
+!cms/public/uploads/.gitkeep
+cms/license.txt
+cms/exports/
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+*.swp
+
+# Vercel
+frontend/.vercel/

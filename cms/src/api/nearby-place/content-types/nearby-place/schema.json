@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nearby",
+  "info": {
+    "singularName": "nearby-place",
+    "pluralName": "nearby",
+    "displayName": "Nearby place",
+    "description": "Places near the resort shown below gallery"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "distanceLabel": {
+      "type": "string",
+      "required": true,
+      "default": "5 km from property"
+    },
+    "description": {
+      "type": "text"
+    },
+    "sortOrder": {
+      "type": "integer",
+      "default": 0
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
