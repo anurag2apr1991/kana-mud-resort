@@ -46,18 +46,18 @@ if ( ! count( $items ) && kmr_use_demo_assets() ) {
 <section id="gallery" class="scroll-mt-28 bg-white py-20 sm:py-28<?php echo $gallery_demo ? ' kmr-section--demo' : ''; ?>">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
 		<?php if ( ! count( $items ) ) : ?>
-			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Gallery', 'kana-mud-resort' ); ?></h2>
-			<p class="mt-4 text-stone-600"><?php esc_html_e( 'New photos of the property will appear here soon.', 'kana-mud-resort' ); ?></p>
+			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_gallery_empty_title', __( 'Gallery', 'kana-mud-resort' ) ) ); ?></h2>
+			<p class="mt-4 text-stone-600"><?php echo esc_html( kmr_text( 'section_gallery_empty_message', __( 'New photos of the property will appear here soon.', 'kana-mud-resort' ) ) ); ?></p>
 		<?php else : ?>
 			<?php if ( $gallery_demo && current_user_can( 'manage_options' ) ) : ?>
 				<p class="mb-6 rounded-2xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-sm text-amber-950">
 					<?php esc_html_e( 'Demo photos are shown until you add entries under Gallery photos and set featured images. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
 				</p>
 			<?php endif; ?>
-			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Moments', 'kana-mud-resort' ); ?></p>
-			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Around the property', 'kana-mud-resort' ); ?></h2>
+			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( kmr_text( 'section_gallery_eyebrow', __( 'Moments', 'kana-mud-resort' ) ) ); ?></p>
+			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_gallery_title', __( 'Around the property', 'kana-mud-resort' ) ) ); ?></h2>
 			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-stone-600">
-				<?php esc_html_e( 'Mud walls, forest light, courtyards, and paths you will want to remember — a quiet look at the retreat before you arrive.', 'kana-mud-resort' ); ?>
+				<?php echo esc_html( kmr_text( 'section_gallery_intro', __( 'Mud walls, forest light, courtyards, and paths you will want to remember — a quiet look at the retreat before you arrive.', 'kana-mud-resort' ) ) ); ?>
 			</p>
 			<div class="kmr-gallery-grid mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-kmr-gallery="<?php echo esc_attr( wp_json_encode( $items ) ); ?>">
 				<?php foreach ( $items as $idx => $it ) : ?>

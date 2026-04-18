@@ -15,16 +15,17 @@ add_action( 'init', 'kmr_register_post_types' );
 function kmr_register_post_types(): void {
 	$rooms = [
 		'labels'              => [
-			'name'          => __( 'Rooms', 'kana-mud-resort' ),
-			'singular_name' => __( 'Room', 'kana-mud-resort' ),
-			'add_new_item'  => __( 'Add New Room', 'kana-mud-resort' ),
-			'edit_item'     => __( 'Edit Room', 'kana-mud-resort' ),
+			'name'               => __( 'Rooms', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Room', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Rooms', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add New Room', 'kana-mud-resort' ),
+			'edit_item'          => __( 'Edit Room', 'kana-mud-resort' ),
+			'all_items'          => __( 'Rooms', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 20,
-		'menu_icon'           => 'dashicons-admin-home',
 		'capability_type'     => 'post',
 		'has_archive'         => false,
 		'rewrite'             => false,
@@ -34,14 +35,16 @@ function kmr_register_post_types(): void {
 
 	$photos = [
 		'labels'              => [
-			'name'          => __( 'Gallery photos', 'kana-mud-resort' ),
-			'singular_name' => __( 'Gallery photo', 'kana-mud-resort' ),
+			'name'               => __( 'Gallery', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Gallery photo', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Gallery', 'kana-mud-resort' ),
+			'all_items'          => __( 'Gallery', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add gallery photo', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 21,
-		'menu_icon'           => 'dashicons-format-gallery',
 		'capability_type'     => 'post',
 		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
 	];
@@ -49,14 +52,16 @@ function kmr_register_post_types(): void {
 
 	$nearby = [
 		'labels'              => [
-			'name'          => __( 'Nearby places', 'kana-mud-resort' ),
-			'singular_name' => __( 'Nearby place', 'kana-mud-resort' ),
+			'name'               => __( 'Nearby places', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Nearby place', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Nearby places', 'kana-mud-resort' ),
+			'all_items'          => __( 'Nearby places', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add nearby place', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 22,
-		'menu_icon'           => 'dashicons-location',
 		'capability_type'     => 'post',
 		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
 	];
@@ -64,14 +69,16 @@ function kmr_register_post_types(): void {
 
 	$amenities = [
 		'labels'              => [
-			'name'          => __( 'Amenities', 'kana-mud-resort' ),
-			'singular_name' => __( 'Amenity', 'kana-mud-resort' ),
+			'name'               => __( 'Amenities', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Amenity', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Amenities', 'kana-mud-resort' ),
+			'all_items'          => __( 'Amenities', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add amenity', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 23,
-		'menu_icon'           => 'dashicons-heart',
 		'capability_type'     => 'post',
 		'supports'            => [ 'title', 'page-attributes' ],
 	];
@@ -79,14 +86,16 @@ function kmr_register_post_types(): void {
 
 	$offers = [
 		'labels'              => [
-			'name'          => __( 'Offers', 'kana-mud-resort' ),
-			'singular_name' => __( 'Offer', 'kana-mud-resort' ),
+			'name'               => __( 'Offers & packages', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Offer', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Offers & packages', 'kana-mud-resort' ),
+			'all_items'          => __( 'Offers & packages', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add offer', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 24,
-		'menu_icon'           => 'dashicons-tickets-alt',
 		'capability_type'     => 'post',
 		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
 	];
@@ -94,14 +103,16 @@ function kmr_register_post_types(): void {
 
 	$testimonials = [
 		'labels'              => [
-			'name'          => __( 'Testimonials', 'kana-mud-resort' ),
-			'singular_name' => __( 'Testimonial', 'kana-mud-resort' ),
+			'name'               => __( 'Guests', 'kana-mud-resort' ),
+			'singular_name'      => __( 'Guest quote', 'kana-mud-resort' ),
+			'menu_name'          => __( 'Guests', 'kana-mud-resort' ),
+			'all_items'          => __( 'Guests', 'kana-mud-resort' ),
+			'add_new_item'       => __( 'Add guest quote', 'kana-mud-resort' ),
 		],
 		'public'              => false,
 		'show_ui'             => true,
-		'show_in_menu'        => true,
+		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 25,
-		'menu_icon'           => 'dashicons-testimonial',
 		'capability_type'     => 'post',
 		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
 	];

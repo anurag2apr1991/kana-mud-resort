@@ -11,7 +11,13 @@ $primary_label   = kmr_get_option( 'booking_primary_label', __( 'Book', 'kana-mu
 $primary_url     = kmr_booking_primary_href( kmr_get_option( 'booking_primary_url', '#contact' ) );
 $secondary_label = kmr_get_option( 'booking_secondary_label', '' );
 $secondary_url   = trim( (string) kmr_get_option( 'booking_secondary_url', '' ) );
-$footer_note     = kmr_get_option( 'booking_footer_note', __( 'Himalayan-style calm, earth-built simplicity, and warm hospitality near Mussoorie.', 'kana-mud-resort' ) );
+$footer_note = kmr_get_option( 'booking_footer_note', __( 'Himalayan-style calm, earth-built simplicity, and warm hospitality near Mussoorie.', 'kana-mud-resort' ) );
+
+$footer_brand = trim( (string) kmr_get_option( 'footer_brand_name', '' ) );
+if ( $footer_brand === '' ) {
+	$footer_brand = kmr_get_option( 'site_brand_name', __( 'Kana Mud Resort', 'kana-mud-resort' ) );
+}
+$footer_legal = kmr_text( 'footer_legal_text', __( 'Kana Mud Resort. All rights reserved.', 'kana-mud-resort' ) );
 
 $primary_target = '';
 $primary_rel    = '';
@@ -23,7 +29,7 @@ if ( str_starts_with( $primary_url, 'http' ) ) {
 	<footer class="border-t border-stone-200 bg-stone-900 py-12 text-stone-300">
 		<div class="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
 			<div>
-				<p class="font-serif text-lg text-white"><?php esc_html_e( 'Kana Mud Resort', 'kana-mud-resort' ); ?></p>
+				<p class="font-serif text-lg text-white"><?php echo esc_html( $footer_brand ); ?></p>
 				<p class="mt-2 max-w-md text-sm leading-relaxed text-stone-400"><?php echo esc_html( $footer_note ); ?></p>
 			</div>
 			<div class="flex flex-wrap gap-4">
@@ -34,7 +40,7 @@ if ( str_starts_with( $primary_url, 'http' ) ) {
 			</div>
 		</div>
 		<p class="mx-auto mt-10 max-w-6xl px-4 text-center text-xs text-stone-500 sm:px-6">
-			© <?php echo esc_html( (string) gmdate( 'Y' ) ); ?> <?php esc_html_e( 'Kana Mud Resort. All rights reserved.', 'kana-mud-resort' ); ?>
+			© <?php echo esc_html( (string) gmdate( 'Y' ) ); ?> <?php echo esc_html( $footer_legal ); ?>
 		</p>
 	</footer>
 	<?php wp_footer(); ?>

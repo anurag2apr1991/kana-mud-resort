@@ -20,13 +20,13 @@ $places = get_posts(
 <section id="nearby" class="scroll-mt-28 bg-stone-50 py-20 sm:py-28">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
 		<?php if ( ! count( $places ) ) : ?>
-			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Nearby places', 'kana-mud-resort' ); ?></h2>
-			<p class="mt-4 text-stone-600"><?php esc_html_e( 'Nearby walks, villages, and viewpoints will be listed here soon.', 'kana-mud-resort' ); ?></p>
+			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_nearby_empty_title', __( 'Nearby places', 'kana-mud-resort' ) ) ); ?></h2>
+			<p class="mt-4 text-stone-600"><?php echo esc_html( kmr_text( 'section_nearby_empty_message', __( 'Nearby walks, villages, and viewpoints will be listed here soon.', 'kana-mud-resort' ) ) ); ?></p>
 		<?php else : ?>
-			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Explore', 'kana-mud-resort' ); ?></p>
-			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Nearby places', 'kana-mud-resort' ); ?></h2>
+			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( kmr_text( 'section_nearby_eyebrow', __( 'Explore', 'kana-mud-resort' ) ) ); ?></p>
+			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_nearby_title', __( 'Nearby places', 'kana-mud-resort' ) ) ); ?></h2>
 			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-stone-600">
-				<?php esc_html_e( 'Mussoorie, ridge walks, and the villages along the slopes are within easy reach—sunset viewpoints, craft corners, and day trips you can pair with slow days at the retreat.', 'kana-mud-resort' ); ?>
+				<?php echo esc_html( kmr_text( 'section_nearby_intro', __( 'Mussoorie, ridge walks, and the villages along the slopes are within easy reach—sunset viewpoints, craft corners, and day trips you can pair with slow days at the retreat.', 'kana-mud-resort' ) ) ); ?>
 			</p>
 			<?php
 			$total_pages = (int) ceil( count( $places ) / 3 );

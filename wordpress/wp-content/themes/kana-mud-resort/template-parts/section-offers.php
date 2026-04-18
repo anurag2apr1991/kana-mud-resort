@@ -16,16 +16,25 @@ $offers = get_posts(
 		'order'          => 'ASC',
 	]
 );
+
+$off_eyebrow = kmr_text( 'section_offers_eyebrow', __( 'Value', 'kana-mud-resort' ) );
+$off_title   = kmr_text( 'section_offers_title', __( 'Offers & packages', 'kana-mud-resort' ) );
+$off_empty   = kmr_text( 'section_offers_empty_message', __( 'Seasonal packages and special rates will be listed here when available. Ask us about current offers.', 'kana-mud-resort' ) );
+$off_intro   = trim( (string) kmr_get_option( 'section_offers_intro', '' ) );
+$off_cta     = kmr_text( 'section_offers_cta_label', __( 'Enquire now', 'kana-mud-resort' ) );
 ?>
 <section id="offers" class="scroll-mt-28 bg-white py-20 sm:py-28">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
-		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Value', 'kana-mud-resort' ); ?></p>
-		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Offers & packages', 'kana-mud-resort' ); ?></h2>
+		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( $off_eyebrow ); ?></p>
+		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( $off_title ); ?></h2>
 		<?php if ( ! count( $offers ) ) : ?>
 			<p class="mt-6 max-w-2xl text-stone-600">
-				<?php esc_html_e( 'Seasonal packages and special rates will be listed here when available. Ask us about current offers.', 'kana-mud-resort' ); ?>
+				<?php echo esc_html( $off_empty ); ?>
 			</p>
 		<?php else : ?>
+			<?php if ( $off_intro !== '' ) : ?>
+				<p class="mt-4 max-w-2xl text-lg text-stone-600"><?php echo esc_html( $off_intro ); ?></p>
+			<?php endif; ?>
 			<div class="mt-12 grid gap-8 lg:grid-cols-2">
 				<?php foreach ( $offers as $p ) : ?>
 					<?php
@@ -72,7 +81,7 @@ $offers = get_posts(
 								</p>
 							<?php endif; ?>
 							<div class="mt-6">
-								<a href="#contact" class="inline-flex rounded-full bg-emerald-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-900"><?php esc_html_e( 'Enquire now', 'kana-mud-resort' ); ?></a>
+								<a href="#contact" class="inline-flex rounded-full bg-emerald-800 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-900"><?php echo esc_html( $off_cta ); ?></a>
 							</div>
 						</div>
 					</article>

@@ -61,7 +61,7 @@ function kmr_add_meta_boxes(): void {
 
 	add_meta_box(
 		'kmr_testimonial_details',
-		__( 'Testimonial', 'kana-mud-resort' ),
+		__( 'Guest quote', 'kana-mud-resort' ),
 		'kmr_render_testimonial_meta_box',
 		'kmr_testimonial',
 		'normal',

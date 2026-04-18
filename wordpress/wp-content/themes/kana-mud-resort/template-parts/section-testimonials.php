@@ -16,13 +16,16 @@ $items = get_posts(
 		'order'          => 'ASC',
 	]
 );
+$ts_eye = kmr_text( 'section_testimonials_eyebrow', __( 'Guests', 'kana-mud-resort' ) );
+$ts_ttl = kmr_text( 'section_testimonials_title', __( 'What visitors say', 'kana-mud-resort' ) );
+$ts_emp = kmr_text( 'section_testimonials_empty_message', __( 'Guest stories will appear here soon.', 'kana-mud-resort' ) );
 ?>
 <section id="testimonials" class="scroll-mt-28 bg-stone-100 py-20 sm:py-28">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
-		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Guests', 'kana-mud-resort' ); ?></p>
-		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'What visitors say', 'kana-mud-resort' ); ?></h2>
+		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( $ts_eye ); ?></p>
+		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( $ts_ttl ); ?></h2>
 		<?php if ( ! count( $items ) ) : ?>
-			<p class="mt-6 max-w-2xl text-stone-600"><?php esc_html_e( 'Guest stories will appear here soon.', 'kana-mud-resort' ); ?></p>
+			<p class="mt-6 max-w-2xl text-stone-600"><?php echo esc_html( $ts_emp ); ?></p>
 		<?php else : ?>
 			<div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 				<?php foreach ( $items as $p ) : ?>

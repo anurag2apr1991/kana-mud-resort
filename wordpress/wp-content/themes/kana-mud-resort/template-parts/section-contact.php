@@ -15,39 +15,49 @@ $map_raw = (string) kmr_get_option( 'contact_map_embed_url', '' );
 
 $has_iframe = str_contains( $map_raw, '<' );
 $map_src    = $has_iframe ? null : kmr_normalize_map_url( $map_raw );
+
+$c_eye = kmr_text( 'section_contact_eyebrow', __( 'Visit', 'kana-mud-resort' ) );
+$c_ttl = kmr_text( 'section_contact_title', __( 'Contact & location', 'kana-mud-resort' ) );
+$c_int = kmr_text( 'section_contact_intro', __( 'Reach us by phone or email, find directions below, and plan your arrival with confidence.', 'kana-mud-resort' ) );
+$c_adr = kmr_text( 'section_contact_address_placeholder', __( 'Address details will appear here soon.', 'kana-mud-resort' ) );
+$c_map = kmr_text( 'section_contact_map_placeholder', __( 'Map preview is not available yet. Use the address on the left for directions.', 'kana-mud-resort' ) );
+$lb_ad = kmr_text( 'section_contact_label_address', __( 'Address', 'kana-mud-resort' ) );
+$lb_ph = kmr_text( 'section_contact_label_phone', __( 'Phone', 'kana-mud-resort' ) );
+$lb_em = kmr_text( 'section_contact_label_email', __( 'Email', 'kana-mud-resort' ) );
+$lb_hr = kmr_text( 'section_contact_label_hours', __( 'Hours', 'kana-mud-resort' ) );
 ?>
 <section id="contact" class="scroll-mt-28 bg-stone-50 py-20 sm:py-28">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
-		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Visit', 'kana-mud-resort' ); ?></p>
-		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Contact & location', 'kana-mud-resort' ); ?></h2>
+		<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( $c_eye ); ?></p>
+		<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( $c_ttl ); ?></h2>
 		<p class="mt-4 max-w-2xl text-stone-600">
-			<?php esc_html_e( 'Reach us by phone or email, find directions below, and plan your arrival with confidence.', 'kana-mud-resort' ); ?>
+			<?php echo esc_html( $c_int ); ?>
 		</p>
 		<div class="mt-12 grid gap-10 lg:grid-cols-2 lg:items-stretch">
 			<div class="space-y-6 rounded-3xl bg-white p-8 shadow-sm ring-1 ring-stone-200/80">
 				<?php if ( $address ) : ?>
 					<div>
-						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php esc_html_e( 'Address', 'kana-mud-resort' ); ?></h3>
+						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php echo esc_html( $lb_ad ); ?></h3>
 						<p class="mt-2 whitespace-pre-line text-stone-800"><?php echo esc_html( $address ); ?></p>
 					</div>
 				<?php else : ?>
-					<p class="text-stone-500"><?php esc_html_e( 'Address details will appear here soon.', 'kana-mud-resort' ); ?></p>
+					<p class="text-stone-500"><?php echo esc_html( $c_adr ); ?></p>
 				<?php endif; ?>
 				<?php if ( $phone ) : ?>
 					<div>
-						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php esc_html_e( 'Phone', 'kana-mud-resort' ); ?></h3>
+						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php echo esc_html( $lb_ph ); ?></h3>
 						<a href="<?php echo esc_url( 'tel:' . preg_replace( '/\s+/', '', $phone ) ); ?>" class="mt-2 inline-block text-lg font-medium text-emerald-800 hover:underline"><?php echo esc_html( $phone ); ?></a>
 					</div>
 				<?php endif; ?>
 				<?php if ( $email ) : ?>
 					<div>
-						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php esc_html_e( 'Email', 'kana-mud-resort' ); ?></h3>
+						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php echo esc_html( $lb_em ); ?></h3>
 						<a href="<?php echo esc_url( 'mailto:' . $email ); ?>" class="mt-2 inline-block font-medium text-emerald-800 hover:underline"><?php echo esc_html( $email ); ?></a>
 					</div>
 				<?php endif; ?>
 				<?php if ( $hours ) : ?>
 					<div>
-						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php esc_html_e( 'Hours', 'kana-mud-resort' ); ?></h3>
+						<h3 class="text-sm font-semibold uppercase tracking-wide text-stone-500"><?php echo esc_html( $lb_hr ); ?></h3>
 						<p class="mt-2 whitespace-pre-line text-stone-700"><?php echo esc_html( $hours ); ?></p>
 					</div>
 				<?php endif; ?>
@@ -61,7 +71,7 @@ $map_src    = $has_iframe ? null : kmr_normalize_map_url( $map_raw );
 					<iframe title="<?php esc_attr_e( 'Map', 'kana-mud-resort' ); ?>" src="<?php echo esc_url( $map_src ); ?>" class="absolute inset-0 h-full w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 				<?php else : ?>
 					<div class="flex h-full min-h-[12rem] items-center justify-center p-8 text-center text-stone-500">
-						<?php esc_html_e( 'Map preview is not available yet. Use the address on the left for directions.', 'kana-mud-resort' ); ?>
+						<?php echo esc_html( $c_map ); ?>
 					</div>
 				<?php endif; ?>
 			</div>

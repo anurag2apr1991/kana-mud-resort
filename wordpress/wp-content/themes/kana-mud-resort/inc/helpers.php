@@ -21,6 +21,21 @@ function kmr_get_option( string $key, $default = '' ) {
 }
 
 /**
+ * Trimmed theme option, or default if empty (for CMS-editable section copy).
+ *
+ * @param string $key Option key under kmr_options.
+ * @param string $default Fallback when missing or blank.
+ */
+function kmr_text( string $key, string $default ): string {
+	$v = kmr_get_option( $key, $default );
+	if ( ! is_string( $v ) ) {
+		return $default;
+	}
+	$v = trim( $v );
+	return $v !== '' ? $v : $default;
+}
+
+/**
  * @param int|null $attachment_id Attachment ID.
  * @param string   $size Image size.
  * @return string URL or empty string.
@@ -67,7 +82,7 @@ function kmr_default_nav(): array {
 		[ 'href' => '#nearby', 'label' => __( 'Nearby', 'kana-mud-resort' ) ],
 		[ 'href' => '#amenities', 'label' => __( 'Amenities', 'kana-mud-resort' ) ],
 		[ 'href' => '#offers', 'label' => __( 'Offers', 'kana-mud-resort' ) ],
-		[ 'href' => '#testimonials', 'label' => __( 'Stories', 'kana-mud-resort' ) ],
+		[ 'href' => '#testimonials', 'label' => __( 'Guests', 'kana-mud-resort' ) ],
 		[ 'href' => '#contact', 'label' => __( 'Contact', 'kana-mud-resort' ) ],
 	];
 }

@@ -7,15 +7,19 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'KMR_VERSION', '1.0.0' );
+define( 'KMR_VERSION', '1.0.6' );
 define( 'KMR_DIR', get_template_directory() );
 define( 'KMR_URI', get_template_directory_uri() );
 
+require KMR_DIR . '/inc/php-compat.php';
 require KMR_DIR . '/inc/helpers.php';
 require KMR_DIR . '/inc/demo-assets.php';
 require KMR_DIR . '/inc/cpt.php';
 require KMR_DIR . '/inc/meta-boxes.php';
 require KMR_DIR . '/inc/admin-options.php';
+require KMR_DIR . '/inc/admin-dashboard-widget.php';
+require KMR_DIR . '/inc/admin-site-hub.php';
+require KMR_DIR . '/inc/admin-hosting-notice.php';
 
 add_action( 'after_setup_theme', 'kmr_setup' );
 

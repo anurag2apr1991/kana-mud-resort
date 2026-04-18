@@ -14,6 +14,9 @@ $cta     = kmr_get_option( 'hero_cta_label', __( 'Explore rooms', 'kana-mud-reso
 $target  = kmr_get_option( 'hero_cta_target_section', 'rooms' );
 $target  = $target ? preg_replace( '/[^a-z0-9_-]/i', '', $target ) : 'rooms';
 
+$sec_cta_label = kmr_text( 'hero_secondary_cta_label', __( 'Plan your visit', 'kana-mud-resort' ) );
+$sec_cta_href  = kmr_text( 'hero_secondary_cta_href', '#contact' );
+
 $urls           = kmr_resolve_hero_image_urls();
 $urls_json      = wp_json_encode( $urls );
 $hero_has_media = count( kmr_parse_id_list( (string) kmr_get_option( 'hero_background_ids', '' ) ) ) > 0;
@@ -49,7 +52,7 @@ $hero_has_media = count( kmr_parse_id_list( (string) kmr_get_option( 'hero_backg
 		<?php endif; ?>
 		<div class="mt-10 flex flex-wrap gap-4">
 			<a href="#<?php echo esc_attr( $target ); ?>" class="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-stone-900 shadow-lg transition hover:bg-stone-100"><?php echo esc_html( $cta ); ?></a>
-			<a href="#contact" class="inline-flex rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10"><?php esc_html_e( 'Plan your visit', 'kana-mud-resort' ); ?></a>
+			<a href="<?php echo kmr_esc_href( $sec_cta_href ); ?>" class="inline-flex rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/10"><?php echo esc_html( $sec_cta_label ); ?></a>
 		</div>
 	</div>
 </section>

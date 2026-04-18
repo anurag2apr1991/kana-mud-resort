@@ -48,6 +48,17 @@ docker-compose down -v
 2. In **wp-admin → Appearance → Themes**, activate **Kana Mud Resort**.
 3. **Settings → Reading:** either keep “Your latest posts” or set a static front page — the theme’s `index.php` / `front-page.php` render the same one-page layout.
 
+### Where to edit (this theme is not “Pages → Home”)
+
+The public home page is **not** the block content of a single Page. You edit it here:
+
+- **Appearance → Resort Home** — hero, booking CTAs, contact, map, site name / menu JSON.
+- **Left sidebar:** **Rooms**, **Gallery photos**, **Nearby places**, **Amenities**, **Offers**, **Testimonials** — each is its own post type (featured images + meta boxes).
+
+After upload, log in as **Administrator**. Editors with only the `editor` role may not see **Appearance → Resort Home** (WordPress hides theme settings). Use an admin account or extend capabilities.
+
+If **saving** Resort Home fails on the host: check **PHP memory** (128MB+), **ModSecurity** / firewall blocking `POST` to `wp-admin`, and try disabling **caching / security** plugins briefly.
+
 ---
 
 ## Configure the site

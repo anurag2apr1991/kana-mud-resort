@@ -121,9 +121,9 @@ if ( ! count( $room_data ) && kmr_use_demo_assets() ) {
 <section id="rooms" class="scroll-mt-28 bg-stone-50 py-20 sm:py-28<?php echo $rooms_demo ? ' kmr-section--demo' : ''; ?>">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
 		<?php if ( ! count( $room_data ) ) : ?>
-			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Rooms', 'kana-mud-resort' ); ?></h2>
+			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_rooms_empty_title', __( 'Rooms', 'kana-mud-resort' ) ) ); ?></h2>
 			<p class="mt-4 max-w-2xl text-stone-600">
-				<?php esc_html_e( 'Room descriptions and rates will appear here soon. Contact us to check availability.', 'kana-mud-resort' ); ?>
+				<?php echo esc_html( kmr_text( 'section_rooms_empty_message', __( 'Room descriptions and rates will appear here soon. Contact us to check availability.', 'kana-mud-resort' ) ) ); ?>
 			</p>
 		<?php else : ?>
 			<?php if ( $rooms_demo && current_user_can( 'manage_options' ) ) : ?>
@@ -131,10 +131,10 @@ if ( ! count( $room_data ) && kmr_use_demo_assets() ) {
 					<?php esc_html_e( 'Demo rooms are shown until you publish Rooms with featured images. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
 				</p>
 			<?php endif; ?>
-			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Stay', 'kana-mud-resort' ); ?></p>
-			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Rooms & cottages', 'kana-mud-resort' ); ?></h2>
+			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php echo esc_html( kmr_text( 'section_rooms_eyebrow', __( 'Stay', 'kana-mud-resort' ) ) ); ?></p>
+			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php echo esc_html( kmr_text( 'section_rooms_title', __( 'Rooms & cottages', 'kana-mud-resort' ) ) ); ?></h2>
 			<p class="mt-4 max-w-2xl text-lg text-stone-600">
-				<?php esc_html_e( 'Each space is curated for rest—earthy textures, soft light, and views you will want to wake up to.', 'kana-mud-resort' ); ?>
+				<?php echo esc_html( kmr_text( 'section_rooms_intro', __( 'Each space is curated for rest—earthy textures, soft light, and views you will want to wake up to.', 'kana-mud-resort' ) ) ); ?>
 			</p>
 			<div class="mt-14 grid items-stretch gap-8 lg:grid-cols-2">
 				<?php foreach ( $room_data as $row ) : ?>
