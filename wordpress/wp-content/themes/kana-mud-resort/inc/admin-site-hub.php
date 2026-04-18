@@ -292,14 +292,14 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'  => 'experience',
 			'title' => __( 'Experience & amenities (headings)', 'kana-mud-resort' ),
-			'desc'  => __( 'Eyebrow, title, and intro paragraph above the amenities grid. For each amenity card’s text, use Amenities (items) and the post editor.', 'kana-mud-resort' ),
+			'desc'  => __( 'Eyebrow, title, and intro paragraph above the amenities grid. For each card’s photo and short line, use Amenities (items): Featured Image + optional description.', 'kana-mud-resort' ),
 			'edit'  => $base . '#kmr-section-amenities-intro',
 			'cap'   => 'manage_options',
 		],
 		[
 			'slug'       => 'amenities',
 			'title'      => __( 'Amenities (items)', 'kana-mud-resort' ),
-			'desc'       => __( 'One card per amenity: title, icon key, long text in the editor (text only—no images; optional short fallback).', 'kana-mud-resort' ),
+			'desc'       => __( 'One card per amenity: title, Featured Image (shown on the site), optional short description. Legacy entries may still show an emoji if no image is set.', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_amenity' ),
 			'post_type'  => 'kmr_amenity',
 		],

@@ -502,7 +502,7 @@ function kmr_render_options_page(): void {
 
 			<h2 class="title" id="kmr-section-amenities-intro"><?php esc_html_e( 'Experience & amenities (section headings)', 'kana-mud-resort' ); ?></h2>
 			<p class="description" style="max-width:52rem;">
-				<?php esc_html_e( 'These lines appear above the amenities grid. For each card’s long description, edit the post under Resort site → Amenities and use the main content editor.', 'kana-mud-resort' ); ?>
+				<?php esc_html_e( 'These lines appear above the amenities grid. For each card, edit Amenities: set the Featured Image (sidebar) and optional short description in the meta box.', 'kana-mud-resort' ); ?>
 			</p>
 			<table class="form-table" role="presentation">
 				<tr>

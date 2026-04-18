@@ -161,18 +161,13 @@ function kmr_render_nearby_meta_box( WP_Post $post ): void {
 function kmr_render_amenity_meta_box( WP_Post $post ): void {
 	wp_nonce_field( 'kmr_save_amenity_meta', 'kmr_amenity_meta_nonce' );
 	$description = get_post_meta( $post->ID, '_kmr_description', true );
-	$icon_key    = get_post_meta( $post->ID, '_kmr_icon_key', true );
 	?>
-	<p>
-		<label for="kmr_icon_key"><?php esc_html_e( 'Icon key', 'kana-mud-resort' ); ?></label><br />
-		<input type="text" class="widefat" id="kmr_icon_key" name="kmr_icon_key" value="<?php echo esc_attr( (string) $icon_key ); ?>" placeholder="leaf, mountain, wifi, food, ..." />
+	<p class="description" style="margin-top:0;">
+		<?php esc_html_e( 'Set the Featured Image in the right sidebar — that photo is shown on the homepage card. Use “Set featured image” to pick from the Media Library.', 'kana-mud-resort' ); ?>
 	</p>
 	<p>
 		<label for="kmr_amenity_description"><strong><?php esc_html_e( 'Short description (optional)', 'kana-mud-resort' ); ?></strong></label><br />
-		<textarea class="widefat" rows="3" id="kmr_amenity_description" name="kmr_amenity_description" placeholder="<?php esc_attr_e( 'Plain text only; used only if the main content above is empty', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
-	</p>
-	<p class="description">
-		<?php esc_html_e( 'Use the icon key for the symbol (no photos). Main editor = text only—do not insert images. Short description is a plain-text fallback when the editor is empty.', 'kana-mud-resort' ); ?>
+		<textarea class="widefat" rows="4" id="kmr_amenity_description" name="kmr_amenity_description" placeholder="<?php esc_attr_e( 'A line or two under the title (plain text)', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
 	</p>
 	<?php
 }
@@ -271,7 +266,6 @@ function kmr_save_meta_boxes( int $post_id, WP_Post $post ): void {
 			if ( ! isset( $_POST['kmr_amenity_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['kmr_amenity_meta_nonce'] ) ), 'kmr_save_amenity_meta' ) ) {
 				return;
 			}
-			update_post_meta( $post_id, '_kmr_icon_key', sanitize_text_field( wp_unslash( $_POST['kmr_icon_key'] ?? '' ) ) );
 			update_post_meta( $post_id, '_kmr_description', sanitize_textarea_field( wp_unslash( $_POST['kmr_amenity_description'] ?? '' ) ) );
 			break;
 		case 'kmr_offer':
@@ -417,6 +411,45 @@ function kmr_offer_admin_columns( array $columns ): array {
  */
 function kmr_offer_admin_column( string $column, int $post_id ): void {
 	if ( 'kmr_offer_thumb' !== $column ) {
+		return;
+	}
+	if ( has_post_thumbnail( $post_id ) ) {
+		echo get_the_post_thumbnail( $post_id, [ 80, 54 ], [ 'style' => 'border-radius:4px;object-fit:cover;' ] );
+	} else {
+		echo '<span class="dashicons dashicons-format-image" style="color:#c3c4c7;" aria-hidden="true"></span>';
+	}
+}
+
+add_filter( 'manage_kmr_amenity_posts_columns', 'kmr_amenity_admin_columns' );
+add_action( 'manage_kmr_amenity_posts_custom_column', 'kmr_amenity_admin_column', 10, 2 );
+
+/**
+ * Show featured image in Amenities list table.
+ *
+ * @param string[] $columns Columns.
+ * @return string[]
+ */
+function kmr_amenity_admin_columns( array $columns ): array {
+	if ( ! isset( $columns['cb'] ) ) {
+		return $columns;
+	}
+	$cb = $columns['cb'];
+	unset( $columns['cb'] );
+	return array_merge(
+		[
+			'cb'               => $cb,
+			'kmr_amenity_thumb' => __( 'Image', 'kana-mud-resort' ),
+		],
+		$columns
+	);
+}
+
+/**
+ * @param string $column Column id.
+ * @param int    $post_id Post ID.
+ */
+function kmr_amenity_admin_column( string $column, int $post_id ): void {
+	if ( 'kmr_amenity_thumb' !== $column ) {
 		return;
 	}
 	if ( has_post_thumbnail( $post_id ) ) {
