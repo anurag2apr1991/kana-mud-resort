@@ -83,6 +83,11 @@
         timer = null;
       }
 
+      const isHero =
+        root.getAttribute("data-kmr-hero") === "1" &&
+        document.getElementById("hero");
+      const uiParent = isHero ? document.getElementById("hero") : root;
+
       let dots = null;
       if (imgs.length > 1) {
         const prevBtn = document.createElement("button");
@@ -90,30 +95,33 @@
         prevBtn.setAttribute("aria-label", "Previous image");
         prevBtn.className =
           "absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/45 px-3 py-2 text-sm font-semibold text-white hover:bg-black/60";
+        if (isHero) prevBtn.style.zIndex = "8";
         prevBtn.textContent = "‹";
         prevBtn.addEventListener("click", function (e) {
           e.stopPropagation();
           prev();
           startTimer();
         });
-        root.appendChild(prevBtn);
+        uiParent.appendChild(prevBtn);
 
         const nextBtn = document.createElement("button");
         nextBtn.type = "button";
         nextBtn.setAttribute("aria-label", "Next image");
         nextBtn.className =
           "absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/45 px-3 py-2 text-sm font-semibold text-white hover:bg-black/60";
+        if (isHero) nextBtn.style.zIndex = "8";
         nextBtn.textContent = "›";
         nextBtn.addEventListener("click", function (e) {
           e.stopPropagation();
           next();
           startTimer();
         });
-        root.appendChild(nextBtn);
+        uiParent.appendChild(nextBtn);
 
         dots = document.createElement("div");
         dots.className =
           "absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2";
+        if (isHero) dots.style.zIndex = "8";
         urls.forEach(function (_, j) {
           const b = document.createElement("button");
           b.type = "button";
@@ -127,7 +135,7 @@
           });
           dots.appendChild(b);
         });
-        root.appendChild(dots);
+        uiParent.appendChild(dots);
       }
 
       if (lightboxOn && imgs.length) {

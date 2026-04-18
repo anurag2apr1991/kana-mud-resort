@@ -212,7 +212,7 @@ function kmr_effective_price( ?int $orig, ?int $disc, ?string $price_label ): ?i
 }
 
 /**
- * Normalize a Google Maps URL for iframe src (matches Next.js behavior loosely).
+ * Normalize a Google Maps URL for iframe src (embed-friendly).
  *
  * @param string|null $input Raw URL.
  * @return string|null Safe URL for iframe or null.
@@ -267,7 +267,7 @@ function kmr_parse_id_list( string $csv ): array {
 }
 
 /**
- * Emoji icon for amenity icon key (matches React AmenityIcon).
+ * Emoji icon for amenity icon key.
  *
  * @param string|null $icon_key Key.
  * @return string

@@ -1,6 +1,6 @@
 <?php
 /**
- * Main fallback — same landing as the React app (single-page resort site).
+ * Main fallback — single-page resort landing.
  *
  * @package Kana_Mud_Resort
  */

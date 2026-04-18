@@ -1,4 +1,4 @@
-# Root + all packages
+# Dependencies
 node_modules/
 
 # OS
@@ -11,23 +11,8 @@ Thumbs.db
 !.env.example
 !**/.env.example
 
-# Next.js (frontend)
-frontend/.next/
-frontend/out/
-frontend/*.tsbuildinfo
-frontend/next-env.d.ts
-
-# Strapi (cms)
-cms/dist/
-cms/build/
-cms/.strapi/
-cms/.strapi-updater.json
-cms/.strapi-cloud.json
-cms/.tmp/
-cms/public/uploads/*
-!cms/public/uploads/.gitkeep
-cms/license.txt
-cms/exports/
+# WordPress theme build tooling (Tailwind output is committed)
+wordpress/wp-content/themes/kana-mud-resort/node_modules/
 
 # Logs
 *.log
@@ -36,6 +21,3 @@ npm-debug.log*
 # IDE
 .idea/
 *.swp
-
-# Vercel
-frontend/.vercel/

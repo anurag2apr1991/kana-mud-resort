@@ -1,6 +1,6 @@
 # Kana Mud Resort — WordPress
 
-This folder contains a **full WordPress theme** for the resort landing site (converted from the Next.js + Strapi stack in `../frontend` and `../cms`).
+This folder contains a **full WordPress theme** for the resort landing site.
 
 - **Theme path:** `wp-content/themes/kana-mud-resort/`
 - **Requirements:** WordPress 6.x, PHP 8.0+, MySQL or MariaDB
@@ -20,10 +20,10 @@ Open **http://127.0.0.1:8888** (host port `8888` → container `80`). If the por
 
 Default database credentials (see `docker-compose.yml`):
 
-| Setting | Value |
-|--------|--------|
+| Setting  | Value       |
+| -------- | ----------- |
 | Database | `wordpress` |
-| User | `wordpress` |
+| User     | `wordpress` |
 | Password | `wordpress` |
 
 Stop containers:
@@ -63,14 +63,14 @@ Central settings for content that is not stored as posts:
 
 ### Custom post types (left admin menu)
 
-| Menu | Purpose |
-|------|--------|
-| **Rooms** | Title, excerpt (short line), editor (long description), featured image + optional extra gallery image IDs in meta. Pricing fields in **Room details** meta box. |
-| **Gallery photos** | Featured image + optional caption. |
-| **Nearby places** | Title, featured image, distance label, description. |
-| **Amenities** | Title, icon key (e.g. `leaf`, `mountain`), description. |
-| **Offers** | Title, featured image, description, badge, valid-until date. |
-| **Testimonials** | Title = guest name; meta: quote, author title, rating 0–5; optional featured image as avatar. |
+| Menu          | Purpose                                                                                                                                        |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Rooms**     | Title, excerpt (short line), editor (long description), featured image + optional extra gallery image IDs in meta. Pricing fields in **Room details**. |
+| **Gallery photos** | Featured image + optional caption.                                                                                                        |
+| **Nearby places** | Title, featured image, distance label, description.                                                                                         |
+| **Amenities** | Title, icon key (e.g. `leaf`, `mountain`), description.                                                                                       |
+| **Offers**    | Title, featured image, description, badge, valid-until date.                                                                                     |
+| **Testimonials** | Title = guest name; meta: quote, author title, rating 0–5; optional featured image as avatar.                                            |
 
 Use **Page Attributes → Order** to control display order where supported.
 
@@ -80,7 +80,7 @@ Use **Page Attributes → Order** to control display order where supported.
 
 The theme ships JPEGs under `wp-content/themes/kana-mud-resort/assets/images/demo/`.
 If **Resort Home → hero background IDs** is empty, the hero uses those files as a slideshow.
-If there are no **Gallery photos** or **Rooms** yet, the theme shows the same assets so the layout matches the Next.js experience before you upload real media.
+If there are no **Gallery photos** or **Rooms** yet, the theme shows the same assets so the layout is complete before you upload real media.
 
 Administrators see short amber notices on the front when demos are active. To turn off fallbacks (empty sections until content exists), add to a small custom plugin or `functions.php` snippet:
 
@@ -104,12 +104,9 @@ Output: `assets/css/main.css`.
 
 ---
 
-## Related repo paths
+## Repo layout
 
-| Path | Role |
-|------|------|
-| `../frontend/` | Original Next.js front end |
-| `../cms/` | Original Strapi CMS |
-| `docker-compose.yml` | Local MySQL + WordPress containers |
-
-Content is **not** auto-migrated from Strapi; re-enter or script a one-off import if you need parity.
+| Path                 | Role                          |
+| -------------------- | ----------------------------- |
+| `docker-compose.yml` | Local MySQL + WordPress       |
+| `README.md` (repo root) | Overview and `npm run clean` |

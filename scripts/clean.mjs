@@ -4,14 +4,9 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-/** Build / cache dirs only — does not remove node_modules or cms/.tmp (database). */
+/** Build / tool caches (Maven-clean style). Does not remove node_modules. */
 const targets = [
-  "frontend/.next",
-  "frontend/out",
-  "frontend/tsconfig.tsbuildinfo",
-  "cms/dist",
-  "cms/build",
-  "cms/.strapi",
+  "wordpress/wp-content/themes/kana-mud-resort/node_modules/.cache",
 ];
 
 let removed = 0;

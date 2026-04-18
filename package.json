@@ -1,15 +1,9 @@
 {
   "name": "kana-mud-resort",
   "private": true,
+  "description": "Kana Mud Resort — WordPress theme and local Docker stack",
   "scripts": {
-    "dev": "concurrently -n cms,web -c blue,green \"npm run develop --prefix cms\" \"npm run dev --prefix frontend\"",
-    "cms": "npm run develop --prefix cms",
-    "web": "npm run dev --prefix frontend",
     "clean": "node scripts/clean.mjs",
-    "build": "npm run build --prefix cms && npm run build --prefix frontend",
-    "import-images": "npm run import-images --prefix cms"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+    "clean:mvn": "node scripts/clean.mjs"
   }
 }

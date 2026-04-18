@@ -28,16 +28,17 @@ $hero_has_media = count( kmr_parse_id_list( (string) kmr_get_option( 'hero_backg
 	<?php endif; ?>
 	<?php if ( count( $urls ) ) : ?>
 		<div
-			class="kmr-carousel absolute inset-0 overflow-hidden"
+			class="kmr-carousel absolute inset-0 z-0 overflow-hidden"
 			data-kmr-carousel
+			data-kmr-hero="1"
 			data-kmr-interval="6000"
 			data-kmr-lightbox="0"
 			data-images="<?php echo esc_attr( $urls_json ); ?>"
 		></div>
 	<?php else : ?>
-		<div class="absolute inset-0 bg-gradient-to-br from-emerald-950 via-stone-800 to-stone-900" aria-hidden="true"></div>
+		<div class="absolute inset-0 z-0 bg-gradient-to-br from-emerald-950 via-stone-800 to-stone-900" aria-hidden="true"></div>
 	<?php endif; ?>
-	<div class="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-900/40 to-stone-900/30" aria-hidden="true"></div>
+	<div class="pointer-events-none absolute inset-0 z-[5] bg-gradient-to-t from-stone-950/90 via-stone-900/40 to-stone-900/30" aria-hidden="true"></div>
 	<div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
 		<?php if ( $eyebrow ) : ?>
 			<p class="mb-3 text-base font-semibold uppercase tracking-[0.25em] text-emerald-200/90"><?php echo esc_html( $eyebrow ); ?></p>

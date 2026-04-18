@@ -1,6 +1,7 @@
 <?php
 /**
  * Bundled demo images + fallbacks when Media Library / CPTs are empty.
+ * (Keeps first-load layout usable before real content is added.)
  *
  * @package Kana_Mud_Resort
  */

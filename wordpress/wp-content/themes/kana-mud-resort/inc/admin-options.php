@@ -186,7 +186,7 @@ function kmr_render_options_page(): void {
 					<th scope="row"><label for="hero_background_ids"><?php esc_html_e( 'Hero background image IDs', 'kana-mud-resort' ); ?></label></th>
 					<td>
 						<input name="kmr_options[hero_background_ids]" id="hero_background_ids" type="text" class="large-text" value="<?php echo esc_attr( $opts['hero_background_ids'] ); ?>" placeholder="12, 34, 56" />
-						<p class="description"><?php esc_html_e( 'Comma-separated Media Library attachment IDs. Slideshow rotates like the Next.js site.', 'kana-mud-resort' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Comma-separated Media Library attachment IDs for the rotating hero background.', 'kana-mud-resort' ); ?></p>
 					</td>
 				</tr>
 			</table>
