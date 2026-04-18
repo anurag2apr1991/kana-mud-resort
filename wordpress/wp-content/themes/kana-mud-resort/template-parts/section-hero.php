@@ -14,17 +14,18 @@ $cta     = kmr_get_option( 'hero_cta_label', __( 'Explore rooms', 'kana-mud-reso
 $target  = kmr_get_option( 'hero_cta_target_section', 'rooms' );
 $target  = $target ? preg_replace( '/[^a-z0-9_-]/i', '', $target ) : 'rooms';
 
-$ids  = kmr_parse_id_list( (string) kmr_get_option( 'hero_background_ids', '' ) );
-$urls = [];
-foreach ( $ids as $aid ) {
-	$u = kmr_image_url( $aid, 'full' );
-	if ( $u ) {
-		$urls[] = $u;
-	}
-}
-$urls_json = wp_json_encode( $urls );
+$urls           = kmr_resolve_hero_image_urls();
+$urls_json      = wp_json_encode( $urls );
+$hero_has_media = count( kmr_parse_id_list( (string) kmr_get_option( 'hero_background_ids', '' ) ) ) > 0;
 ?>
 <section id="hero" class="relative flex min-h-[100svh] flex-col justify-end pb-16 pt-28 sm:pb-24">
+	<?php if ( ! $hero_has_media && count( $urls ) && current_user_can( 'manage_options' ) ) : ?>
+		<div class="absolute left-4 right-4 top-24 z-20 sm:left-6 sm:right-6 lg:left-1/2 lg:right-auto lg:w-full lg:max-w-6xl lg:-translate-x-1/2 lg:px-6">
+			<p class="rounded-2xl border border-amber-200/90 bg-amber-50/95 px-4 py-3 text-sm text-amber-950 shadow-sm backdrop-blur-sm">
+				<?php esc_html_e( 'Demo hero images are shown until you add Media Library attachment IDs under Appearance → Resort Home. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
+			</p>
+		</div>
+	<?php endif; ?>
 	<?php if ( count( $urls ) ) : ?>
 		<div
 			class="kmr-carousel absolute inset-0 overflow-hidden"

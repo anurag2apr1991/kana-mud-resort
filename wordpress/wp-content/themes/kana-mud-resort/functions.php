@@ -12,6 +12,7 @@ define( 'KMR_DIR', get_template_directory() );
 define( 'KMR_URI', get_template_directory_uri() );
 
 require KMR_DIR . '/inc/helpers.php';
+require KMR_DIR . '/inc/demo-assets.php';
 require KMR_DIR . '/inc/cpt.php';
 require KMR_DIR . '/inc/meta-boxes.php';
 require KMR_DIR . '/inc/admin-options.php';
@@ -95,6 +96,29 @@ function kmr_output_json_ld(): void {
 }
 
 add_filter( 'document_title_separator', static fn() => '|' );
+
+add_filter(
+	'body_class',
+	static function ( array $classes ): array {
+		if ( ! is_front_page() && ! is_home() ) {
+			return $classes;
+		}
+		if ( ! kmr_use_demo_assets() ) {
+			return $classes;
+		}
+		$hero = kmr_parse_id_list( (string) kmr_get_option( 'hero_background_ids', '' ) );
+		if ( ! count( $hero ) ) {
+			$classes[] = 'kmr-demo-hero';
+		}
+		if ( ! count( get_posts( [ 'post_type' => 'kmr_photo', 'post_status' => 'publish', 'posts_per_page' => 1, 'fields' => 'ids' ] ) ) ) {
+			$classes[] = 'kmr-demo-gallery';
+		}
+		if ( ! count( get_posts( [ 'post_type' => 'kmr_room', 'post_status' => 'publish', 'posts_per_page' => 1, 'fields' => 'ids' ] ) ) ) {
+			$classes[] = 'kmr-demo-rooms';
+		}
+		return $classes;
+	}
+);
 
 add_action(
 	'wp_head',

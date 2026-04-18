@@ -76,6 +76,20 @@ Use **Page Attributes → Order** to control display order where supported.
 
 ---
 
+## Demo images (bundled in the theme)
+
+The theme ships JPEGs under `wp-content/themes/kana-mud-resort/assets/images/demo/`.
+If **Resort Home → hero background IDs** is empty, the hero uses those files as a slideshow.
+If there are no **Gallery photos** or **Rooms** yet, the theme shows the same assets so the layout matches the Next.js experience before you upload real media.
+
+Administrators see short amber notices on the front when demos are active. To turn off fallbacks (empty sections until content exists), add to a small custom plugin or `functions.php` snippet:
+
+```php
+add_filter( 'kmr_use_demo_assets', '__return_false' );
+```
+
+---
+
 ## Develop / rebuild CSS
 
 The theme uses Tailwind. After changing `src/input.css` or Tailwind usage in PHP:

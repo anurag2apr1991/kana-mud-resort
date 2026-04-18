@@ -46,7 +46,7 @@ function kmr_register_settings(): void {
 function kmr_default_options(): array {
 	return [
 		'hero_eyebrow'            => __( 'Welcome', 'kana-mud-resort' ),
-		'hero_title'              => __( 'Your sanctuary in nature', 'kana-mud-resort' ),
+		'hero_title'              => __( 'A quiet place to arrive and breathe.', 'kana-mud-resort' ),
 		'hero_subtitle'           => __( 'Unwind in thoughtfully designed spaces surrounded by forest and calm.', 'kana-mud-resort' ),
 		'hero_cta_label'          => __( 'Explore rooms', 'kana-mud-resort' ),
 		'hero_cta_target_section' => 'rooms',

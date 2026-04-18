@@ -111,8 +111,14 @@ if ( 'price-low-high' === $sort ) {
 		}
 	);
 }
+
+$rooms_demo = false;
+if ( ! count( $room_data ) && kmr_use_demo_assets() ) {
+	$room_data  = kmr_demo_room_rows();
+	$rooms_demo = true;
+}
 ?>
-<section id="rooms" class="scroll-mt-28 bg-stone-50 py-20 sm:py-28">
+<section id="rooms" class="scroll-mt-28 bg-stone-50 py-20 sm:py-28<?php echo $rooms_demo ? ' kmr-section--demo' : ''; ?>">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6">
 		<?php if ( ! count( $room_data ) ) : ?>
 			<h2 class="font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Rooms', 'kana-mud-resort' ); ?></h2>
@@ -120,6 +126,11 @@ if ( 'price-low-high' === $sort ) {
 				<?php esc_html_e( 'Room descriptions and rates will appear here soon. Contact us to check availability.', 'kana-mud-resort' ); ?>
 			</p>
 		<?php else : ?>
+			<?php if ( $rooms_demo && current_user_can( 'manage_options' ) ) : ?>
+				<p class="mb-6 rounded-2xl border border-amber-200/80 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+					<?php esc_html_e( 'Demo rooms are shown until you publish Rooms with featured images. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
+				</p>
+			<?php endif; ?>
 			<p class="text-base font-semibold uppercase tracking-[0.2em] text-emerald-800"><?php esc_html_e( 'Stay', 'kana-mud-resort' ); ?></p>
 			<h2 class="mt-2 font-serif text-3xl text-stone-900 sm:text-4xl"><?php esc_html_e( 'Rooms & cottages', 'kana-mud-resort' ); ?></h2>
 			<p class="mt-4 max-w-2xl text-lg text-stone-600">
@@ -128,9 +139,11 @@ if ( 'price-low-high' === $sort ) {
 			<div class="mt-14 grid items-stretch gap-8 lg:grid-cols-2">
 				<?php foreach ( $room_data as $row ) : ?>
 					<?php
-					$p       = $row['post'];
-					$excerpt = $p->post_excerpt;
-					$content = $p->post_content;
+					$is_demo = ! empty( $row['demo'] );
+					$p       = $is_demo ? null : $row['post'];
+					$excerpt = $is_demo ? (string) $row['excerpt'] : ( $p ? $p->post_excerpt : '' );
+					$content = $is_demo ? (string) $row['content'] : ( $p ? $p->post_content : '' );
+					$title   = $is_demo ? (string) $row['title'] : ( $p ? get_the_title( $p ) : '' );
 					?>
 					<article class="flex h-full flex-col overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-stone-200/80">
 						<div class="relative aspect-[4/3] w-full bg-stone-200">
@@ -148,7 +161,7 @@ if ( 'price-low-high' === $sort ) {
 						</div>
 						<div class="flex flex-1 flex-col p-6 sm:p-8">
 							<div class="flex flex-wrap items-baseline justify-between gap-2">
-								<h3 class="font-serif text-2xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
+								<h3 class="font-serif text-2xl text-stone-900"><?php echo esc_html( $title ); ?></h3>
 								<?php if ( $row['has_discount'] ) : ?>
 									<span class="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-900">
 										<span class="mr-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700"><?php echo esc_html( (string) $row['discount_pct'] ); ?>% OFF</span>
