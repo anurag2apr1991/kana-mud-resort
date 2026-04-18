@@ -271,7 +271,7 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'       => 'rooms',
 			'title'      => __( 'Rooms', 'kana-mud-resort' ),
-			'desc'       => __( 'One room per card: Featured Image + “Add images to carousel” for extra slides; excerpt and editor for text only (prices in sidebar).', 'kana-mud-resort' ),
+			'desc'       => __( 'One room per card: Featured Image + “Choose images…” in Room details for extra carousel slides; excerpt and editor for text only (prices in sidebar).', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_room' ),
 			'post_type'  => 'kmr_room',
 		],

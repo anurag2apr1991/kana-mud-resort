@@ -104,12 +104,13 @@ function kmr_render_room_meta_box( WP_Post $post ): void {
 		<input type="hidden" id="kmr_gallery_ids" name="kmr_gallery_ids" value="<?php echo esc_attr( (string) $gallery_ids ); ?>" />
 		<p>
 			<button type="button" class="button button-secondary" id="kmr-room-gallery-add">
-				<?php esc_html_e( 'Add images to carousel', 'kana-mud-resort' ); ?>
+				<span class="dashicons dashicons-admin-media" style="vertical-align:middle;margin:-2px 4px 0 0;" aria-hidden="true"></span>
+				<?php esc_html_e( 'Choose images…', 'kana-mud-resort' ); ?>
 			</button>
 		</p>
 		<div id="kmr-room-gallery-preview" class="kmr-room-gallery-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:flex-start;"></div>
 		<p class="description">
-			<?php esc_html_e( 'Set the Featured Image as the first slide, then click “Add images to carousel” to choose additional photos from the Media Library (order follows your selection). Remove a thumbnail to drop it from the carousel. Do not insert images in the main editor — use excerpt for a short line and the editor for extra text only.', 'kana-mud-resort' ); ?>
+			<?php esc_html_e( 'Featured Image = first slide. Click “Choose images…” to open the Media Library and pick more photos for the carousel (hold Ctrl/Cmd to select several). Order matches your selection. Click × on a thumbnail to remove it. Do not put images in the main editor — text only there.', 'kana-mud-resort' ); ?>
 		</p>
 	</div>
 	<?php
@@ -434,15 +435,26 @@ function kmr_enqueue_room_gallery_admin( string $hook_suffix ): void {
 	if ( 'post.php' !== $hook_suffix && 'post-new.php' !== $hook_suffix ) {
 		return;
 	}
-	$screen = get_current_screen();
-	if ( ! $screen || 'kmr_room' !== $screen->post_type ) {
+	$screen  = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	$is_room = ( $screen && 'kmr_room' === $screen->post_type );
+	if ( ! $is_room && 'post-new.php' === $hook_suffix && isset( $_GET['post_type'] ) && 'kmr_room' === sanitize_key( wp_unslash( $_GET['post_type'] ) ) ) {
+		$is_room = true;
+	}
+	if ( ! $is_room && 'post.php' === $hook_suffix && isset( $_GET['post'] ) ) {
+		$is_room = ( 'kmr_room' === get_post_type( (int) $_GET['post'] ) );
+	}
+	if ( ! $is_room ) {
 		return;
 	}
 	wp_enqueue_media();
+	wp_enqueue_style( 'dashicons' );
 	wp_enqueue_script(
 		'kmr-admin-room-gallery',
 		KMR_URI . '/assets/js/admin-room-gallery.js',
-		[ 'jquery' ],
+		[
+			'jquery',
+			'media-views',
+		],
 		KMR_VERSION,
 		true
 	);
@@ -466,7 +478,7 @@ function kmr_enqueue_room_gallery_admin( string $hook_suffix ): void {
 			'i18n' => [
 				'title'        => __( 'Select images for the room carousel', 'kana-mud-resort' ),
 				'button'       => __( 'Use selected images', 'kana-mud-resort' ),
-				'add'          => __( 'Add images to carousel', 'kana-mud-resort' ),
+				'choose'       => __( 'Choose images…', 'kana-mud-resort' ),
 				'remove'       => __( 'Remove image from carousel', 'kana-mud-resort' ),
 				'mediaMissing' => __( 'Media library is not ready yet. Wait a moment and try again, or refresh the page.', 'kana-mud-resort' ),
 			],

@@ -1,5 +1,5 @@
 /**
- * Room carousel: select images from Media Library (stores comma-separated IDs).
+ * Room carousel: choose images from the Media Library (stores comma-separated attachment IDs in a hidden field).
  */
 (function ($) {
   "use strict";
@@ -25,6 +25,24 @@
     });
   }
 
+  function withWpMedia(callback) {
+    if (window.wp && wp.media) {
+      callback(true);
+      return;
+    }
+    var attempts = 0;
+    var timer = window.setInterval(function () {
+      attempts += 1;
+      if (window.wp && wp.media) {
+        window.clearInterval(timer);
+        callback(true);
+      } else if (attempts > 240) {
+        window.clearInterval(timer);
+        callback(false);
+      }
+    }, 25);
+  }
+
   function renderPreview($wrap, ids) {
     $wrap.empty();
     if (!ids.length) return;
@@ -41,8 +59,7 @@
       });
       $item.append($img);
       var urlsMap = typeof kmrRoomGallery.urls === "object" ? kmrRoomGallery.urls : {};
-      var url =
-        urlsMap[id] || urlsMap[String(id)] || "";
+      var url = urlsMap[id] || urlsMap[String(id)] || "";
       if (url) {
         $img.attr("src", url);
       } else {
@@ -58,9 +75,10 @@
         if (window.wp && wp.media && wp.media.attachment) {
           var att = wp.media.attachment(id);
           att.fetch().done(function () {
-            var u = att.get("sizes") && att.get("sizes").thumbnail
-              ? att.get("sizes").thumbnail.url
-              : att.get("url");
+            var u =
+              att.get("sizes") && att.get("sizes").thumbnail
+                ? att.get("sizes").thumbnail.url
+                : att.get("url");
             if (u) $img.attr("src", u);
           });
         }
@@ -84,17 +102,7 @@
     });
   }
 
-  function openFrame(e) {
-    e.preventDefault();
-    if (!window.wp || !wp.media) {
-      window.alert(
-        typeof kmrRoomGallery !== "undefined" && kmrRoomGallery.i18n && kmrRoomGallery.i18n.mediaMissing
-          ? kmrRoomGallery.i18n.mediaMissing
-          : "Media library is not available. Wait a moment and try again, or refresh the page."
-      );
-      return;
-    }
-
+  function openMediaFrame() {
     var $input = $("#kmr_gallery_ids");
     var $preview = $("#kmr-room-gallery-preview");
     var ids = parseIds($input.val());
@@ -138,6 +146,21 @@
     frame.open();
   }
 
+  function onChooseClick(e) {
+    e.preventDefault();
+    withWpMedia(function (ok) {
+      if (!ok) {
+        window.alert(
+          kmrRoomGallery.i18n && kmrRoomGallery.i18n.mediaMissing
+            ? kmrRoomGallery.i18n.mediaMissing
+            : "Media library is not available. Wait a moment and try again, or refresh the page."
+        );
+        return;
+      }
+      openMediaFrame();
+    });
+  }
+
   function removeItem(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -160,7 +183,7 @@
     var $root = $("#kmr-room-gallery-root");
     if (!$root.length) return;
 
-    $("#kmr-room-gallery-add").on("click", openFrame);
+    $("#kmr-room-gallery-add").on("click", onChooseClick);
     $("#kmr-room-gallery-preview").on("click", ".kmr-room-gallery__remove", removeItem);
 
     var initial = parseIds($("#kmr_gallery_ids").val());
