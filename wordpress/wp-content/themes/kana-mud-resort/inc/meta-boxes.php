@@ -97,10 +97,12 @@ function kmr_render_room_meta_box( WP_Post $post ): void {
 		<input type="number" min="1" class="small-text" id="kmr_capacity" name="kmr_capacity" value="<?php echo esc_attr( (string) ( $capacity !== '' && $capacity !== null ? $capacity : '2' ) ); ?>" />
 	</p>
 	<p>
-		<label for="kmr_gallery_ids"><?php esc_html_e( 'Extra gallery image IDs (comma-separated attachment IDs, optional)', 'kana-mud-resort' ); ?></label><br />
+		<label for="kmr_gallery_ids"><strong><?php esc_html_e( 'More room photos (carousel)', 'kana-mud-resort' ); ?></strong></label><br />
 		<input type="text" class="widefat" id="kmr_gallery_ids" name="kmr_gallery_ids" value="<?php echo esc_attr( (string) $gallery_ids ); ?>" placeholder="12, 34, 56" />
 	</p>
-	<p class="description"><?php esc_html_e( 'Use the Featured Image for the main photo. Use excerpt for a short line; the main editor holds the full description.', 'kana-mud-resort' ); ?></p>
+	<p class="description">
+		<?php esc_html_e( 'All photos for the card carousel go here: set the Featured Image (first slide), then add Media Library attachment IDs above for extra slides. Do not insert images in the main editor — they would duplicate below the price; the editor is for text only (excerpt = short line under the title, main content = extra paragraphs).', 'kana-mud-resort' ); ?>
+	</p>
 	<?php
 }
 

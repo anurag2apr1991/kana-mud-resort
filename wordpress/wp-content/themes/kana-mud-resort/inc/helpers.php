@@ -282,11 +282,70 @@ function kmr_parse_id_list( string $csv ): array {
 }
 
 /**
- * Emoji icon for amenity icon key.
+ * Room long description: applies the_content, then strips embedded images/blocks so photos only appear in the card carousel (Featured Image + gallery IDs).
  *
- * @param string|null $icon_key Key.
+ * @param string $post_content Raw post content.
+ * @return string HTML safe to echo (filtered like post content).
+ */
+function kmr_room_description_html( string $post_content ): string {
+	$post_content = trim( $post_content );
+	if ( $post_content === '' ) {
+		return '';
+	}
+	$html = apply_filters( 'the_content', $post_content );
+	return kmr_strip_embedded_media_from_room_content( $html );
+}
+
+/**
+ * Remove images, figures, and image/gallery blocks from rendered HTML.
+ *
+ * @param string $html HTML from the_content.
  * @return string
  */
+function kmr_strip_embedded_media_from_room_content( string $html ): string {
+	$html = trim( $html );
+	if ( $html === '' ) {
+		return '';
+	}
+	libxml_use_internal_errors( true );
+	$doc = new DOMDocument();
+	$markup = '<div id="kmr-room-desc-root">' . $html . '</div>';
+	$ok     = @$doc->loadHTML( '<?xml encoding="utf-8">' . $markup, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	if ( ! $ok ) {
+		return $html;
+	}
+	$root = $doc->getElementById( 'kmr-room-desc-root' );
+	if ( ! $root ) {
+		return $html;
+	}
+	$xpath = new DOMXPath( $doc );
+	$remove_nodes = [];
+	foreach ( [ './/img', './/figure' ] as $query ) {
+		foreach ( $xpath->query( $query, $root ) as $node ) {
+			$remove_nodes[ spl_object_id( $node ) ] = $node;
+		}
+	}
+	foreach ( [ 'wp-block-image', 'wp-block-gallery' ] as $class ) {
+		$q = './/*[contains(concat(" ", normalize-space(@class), " "), " ' . $class . ' ")]';
+		foreach ( $xpath->query( $q, $root ) as $node ) {
+			$remove_nodes[ spl_object_id( $node ) ] = $node;
+		}
+	}
+	foreach ( $remove_nodes as $node ) {
+		if ( $node->parentNode ) {
+			$node->parentNode->removeChild( $node );
+		}
+	}
+	$out = '';
+	foreach ( $root->childNodes as $child ) {
+		$out .= $doc->saveHTML( $child );
+	}
+	$out = trim( $out );
+	$out = preg_replace( '/<p>\s*(?:<br\s*\/?>\s*)*<\/p>/i', '', $out );
+	return is_string( $out ) ? trim( $out ) : '';
+}
+
 /**
  * Star row HTML for testimonials.
  *
@@ -305,6 +364,12 @@ function kmr_stars_html( int $n ): string {
 	return '<span class="text-amber-400" aria-label="' . esc_attr( $aria ) . '">' . esc_html( $on ) . '<span class="text-stone-300">' . esc_html( $off ) . '</span></span>';
 }
 
+/**
+ * Emoji icon for amenity icon key.
+ *
+ * @param string|null $icon_key Key.
+ * @return string
+ */
 function kmr_amenity_icon_glyph( ?string $icon_key ): string {
 	$k = strtolower( (string) ( $icon_key ?: 'default' ) );
 	$map = [
