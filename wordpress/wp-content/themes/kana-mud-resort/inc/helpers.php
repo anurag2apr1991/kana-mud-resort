@@ -282,18 +282,27 @@ function kmr_parse_id_list( string $csv ): array {
 }
 
 /**
- * Room long description: applies the_content, then strips embedded images/blocks so photos only appear in the card carousel (Featured Image + gallery IDs).
+ * Filtered post body for homepage cards: runs the_content, then removes embedded images/blocks so photos only come from Featured Image / gallery fields (rooms, nearby, offers, etc.).
  *
  * @param string $post_content Raw post content.
  * @return string HTML safe to echo (filtered like post content).
  */
-function kmr_room_description_html( string $post_content ): string {
+function kmr_entry_content_html( string $post_content ): string {
 	$post_content = trim( $post_content );
 	if ( $post_content === '' ) {
 		return '';
 	}
 	$html = apply_filters( 'the_content', $post_content );
-	return kmr_strip_embedded_media_from_room_content( $html );
+	return kmr_strip_embedded_media_from_content( $html );
+}
+
+/**
+ * @param string $post_content Raw post content.
+ * @return string
+ * @deprecated 1.0.14 Use {@see kmr_entry_content_html()} instead.
+ */
+function kmr_room_description_html( string $post_content ): string {
+	return kmr_entry_content_html( $post_content );
 }
 
 /**
@@ -302,20 +311,20 @@ function kmr_room_description_html( string $post_content ): string {
  * @param string $html HTML from the_content.
  * @return string
  */
-function kmr_strip_embedded_media_from_room_content( string $html ): string {
+function kmr_strip_embedded_media_from_content( string $html ): string {
 	$html = trim( $html );
 	if ( $html === '' ) {
 		return '';
 	}
 	libxml_use_internal_errors( true );
 	$doc = new DOMDocument();
-	$markup = '<div id="kmr-room-desc-root">' . $html . '</div>';
+	$markup = '<div id="kmr-entry-strip-root">' . $html . '</div>';
 	$ok     = @$doc->loadHTML( '<?xml encoding="utf-8">' . $markup, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	if ( ! $ok ) {
 		return $html;
 	}
-	$root = $doc->getElementById( 'kmr-room-desc-root' );
+	$root = $doc->getElementById( 'kmr-entry-strip-root' );
 	if ( ! $root ) {
 		return $html;
 	}

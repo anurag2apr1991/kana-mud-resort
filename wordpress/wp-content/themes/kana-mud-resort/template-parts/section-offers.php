@@ -40,7 +40,7 @@ $off_cta     = kmr_text( 'section_offers_cta_label', __( 'Enquire now', 'kana-mu
 					<?php
 					$pid      = (int) $p->ID;
 					$desc     = (string) get_post_meta( $pid, '_kmr_description', true );
-					$body     = trim( (string) $p->post_content ) !== '' ? apply_filters( 'the_content', $p->post_content ) : '';
+					$body     = trim( (string) $p->post_content ) !== '' ? kmr_entry_content_html( $p->post_content ) : '';
 					$badge    = (string) get_post_meta( $pid, '_kmr_badge', true );
 					$until    = (string) get_post_meta( $pid, '_kmr_valid_until', true );
 					$thumb_id = (int) get_post_thumbnail_id( $pid );
@@ -72,7 +72,7 @@ $off_cta     = kmr_text( 'section_offers_cta_label', __( 'Enquire now', 'kana-mu
 							<h3 class="mt-3 font-serif text-2xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
 							<?php if ( $body ) : ?>
 								<div class="kmr-offer-text mt-3 text-stone-600 [&_a]:text-emerald-800 [&_a]:underline [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mb-2 [&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal">
-									<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core the_content filters. ?>
+									<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kmr_entry_content_html uses the_content filters. ?>
 								</div>
 							<?php elseif ( $desc !== '' ) : ?>
 								<p class="mt-3 text-stone-600"><?php echo esc_html( $desc ); ?></p>

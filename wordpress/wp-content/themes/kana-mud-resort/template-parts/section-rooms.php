@@ -197,11 +197,11 @@ if ( ! count( $room_data ) && kmr_use_demo_assets() ) {
 								<p class="mt-4 min-h-12 text-stone-600"><?php echo esc_html( $excerpt ); ?></p>
 							<?php endif; ?>
 							<?php
-							$room_body_html = $content ? kmr_room_description_html( $content ) : '';
+							$room_body_html = $content ? kmr_entry_content_html( $content ) : '';
 							?>
 							<?php if ( $room_body_html !== '' ) : ?>
 								<div class="kmr-entry-content mt-4 max-w-none text-stone-700 [&_a]:text-emerald-700 [&_a]:underline [&_h2]:mb-2 [&_h2]:mt-6 [&_h2]:font-serif [&_h2]:text-2xl [&_h2]:text-stone-900 [&_h3]:mb-2 [&_h3]:mt-4 [&_h3]:font-serif [&_h3]:text-xl [&_h3]:text-stone-900 [&_li]:my-1 [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc">
-									<?php echo $room_body_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kmr_room_description_html uses the_content filters. ?>
+									<?php echo $room_body_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kmr_entry_content_html uses the_content filters. ?>
 								</div>
 							<?php endif; ?>
 							<?php if ( count( $row['image_urls'] ) > 1 ) : ?>

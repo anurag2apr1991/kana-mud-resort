@@ -285,7 +285,7 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'       => 'nearby',
 			'title'      => __( 'Nearby places', 'kana-mud-resort' ),
-			'desc'       => __( 'Add one entry per place (image, distance label, description).', 'kana-mud-resort' ),
+			'desc'       => __( 'One card per place: Featured image, distance label, editor text only (no images in the body).', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_nearby' ),
 			'post_type'  => 'kmr_nearby',
 		],
@@ -299,14 +299,14 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'       => 'amenities',
 			'title'      => __( 'Amenities (items)', 'kana-mud-resort' ),
-			'desc'       => __( 'Add one entry per amenity card: title, icon key, and long text in the editor (optional short fallback in the sidebar).', 'kana-mud-resort' ),
+			'desc'       => __( 'One card per amenity: title, icon key, long text in the editor (text only—no images; optional short fallback).', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_amenity' ),
 			'post_type'  => 'kmr_amenity',
 		],
 		[
 			'slug'       => 'offers',
 			'title'      => __( 'Offers & packages', 'kana-mud-resort' ),
-			'desc'       => __( 'Add one entry per offer: Featured Image, title, main editor for details, optional badge and valid-until date.', 'kana-mud-resort' ),
+			'desc'       => __( 'One offer per card: Featured image, title, text-only editor, optional badge and valid-until date.', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_offer' ),
 			'post_type'  => 'kmr_offer',
 		],

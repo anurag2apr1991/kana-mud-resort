@@ -37,7 +37,7 @@ $amenities = get_posts(
 					<?php
 					$pid  = (int) $p->ID;
 					$desc = (string) get_post_meta( $pid, '_kmr_description', true );
-					$body = trim( (string) $p->post_content ) !== '' ? apply_filters( 'the_content', $p->post_content ) : '';
+					$body = trim( (string) $p->post_content ) !== '' ? kmr_entry_content_html( $p->post_content ) : '';
 					$icon = (string) get_post_meta( $pid, '_kmr_icon_key', true );
 					$glyph = kmr_amenity_icon_glyph( $icon );
 					$k     = strtolower( $icon ?: 'default' );
@@ -51,7 +51,7 @@ $amenities = get_posts(
 							<h3 class="font-serif text-xl text-white"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
 							<?php if ( $body ) : ?>
 								<div class="kmr-amenity-text mt-2 text-sm leading-relaxed text-emerald-100/90 [&_a]:text-emerald-200 [&_a]:underline [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mb-2 [&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal">
-									<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core the_content filters. ?>
+									<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kmr_entry_content_html uses the_content filters. ?>
 								</div>
 							<?php elseif ( $desc !== '' ) : ?>
 								<p class="mt-2 text-sm leading-relaxed text-emerald-100/85"><?php echo esc_html( $desc ); ?></p>

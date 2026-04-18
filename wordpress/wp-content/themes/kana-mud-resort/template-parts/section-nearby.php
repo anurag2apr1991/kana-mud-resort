@@ -51,7 +51,7 @@ $places = get_posts(
 						$pid      = (int) $p->ID;
 						$dist     = (string) get_post_meta( $pid, '_kmr_distance_label', true );
 						$desc     = (string) get_post_meta( $pid, '_kmr_description', true );
-						$body     = $p->post_content ? apply_filters( 'the_content', $p->post_content ) : '';
+						$body     = trim( (string) $p->post_content ) !== '' ? kmr_entry_content_html( $p->post_content ) : '';
 						$thumb_id = (int) get_post_thumbnail_id( $pid );
 						$src      = kmr_image_url( $thumb_id, 'medium_large' );
 						if ( ! $src ) {
@@ -73,7 +73,7 @@ $places = get_posts(
 								<h3 class="mt-1 font-serif text-xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
 								<?php if ( $body ) : ?>
 									<div class="kmr-nearby-card-text mt-3 flex-1 text-sm leading-relaxed text-stone-600 [&_a]:text-emerald-700 [&_a]:underline [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:ml-4 [&_ul]:list-disc">
-										<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core the_content filters. ?>
+										<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- kmr_entry_content_html uses the_content filters. ?>
 									</div>
 								<?php elseif ( $desc !== '' ) : ?>
 									<p class="mt-3 flex-1 text-sm leading-relaxed text-stone-600"><?php echo esc_html( $desc ); ?></p>

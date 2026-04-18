@@ -132,7 +132,7 @@ function kmr_render_nearby_meta_box( WP_Post $post ): void {
 	$description = get_post_meta( $post->ID, '_kmr_description', true );
 	?>
 	<p class="description" style="margin-top:0;">
-		<?php esc_html_e( 'Homepage card: set the Featured image (right sidebar) for the photo. Title = place name. Use the main editor above for the card text, or the short description below if you prefer plain text.', 'kana-mud-resort' ); ?>
+		<?php esc_html_e( 'Homepage card: Featured image = card photo only. Title = place name. Main editor = text (paragraphs, lists, links)—do not insert images in the editor. Optional short description below if you leave the editor empty.', 'kana-mud-resort' ); ?>
 	</p>
 	<p>
 		<label for="kmr_distance_label"><strong><?php esc_html_e( 'Distance label', 'kana-mud-resort' ); ?></strong></label><br />
@@ -162,7 +162,7 @@ function kmr_render_amenity_meta_box( WP_Post $post ): void {
 		<textarea class="widefat" rows="3" id="kmr_amenity_description" name="kmr_amenity_description" placeholder="<?php esc_attr_e( 'Plain text only; used only if the main content above is empty', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
 	</p>
 	<p class="description">
-		<?php esc_html_e( 'Use the main editor for long text: paragraphs, lists, and links. The short description field is a fallback when the editor is empty.', 'kana-mud-resort' ); ?>
+		<?php esc_html_e( 'Use the icon key for the symbol (no photos). Main editor = text only—do not insert images. Short description is a plain-text fallback when the editor is empty.', 'kana-mud-resort' ); ?>
 	</p>
 	<?php
 }
@@ -177,7 +177,7 @@ function kmr_render_offer_meta_box( WP_Post $post ): void {
 	$valid_until = get_post_meta( $post->ID, '_kmr_valid_until', true );
 	?>
 	<p class="description">
-		<?php esc_html_e( 'Set the Featured Image for the card photo. Use the main editor (under the title) for the full offer text — paragraphs, lists, and links. The short description below is optional plain text if the editor is empty.', 'kana-mud-resort' ); ?>
+		<?php esc_html_e( 'Featured Image = offer photo only. Main editor = text (paragraphs, lists, links)—do not insert images in the editor. Short description below is optional plain text if the editor is empty.', 'kana-mud-resort' ); ?>
 	</p>
 	<p>
 		<label for="kmr_badge"><?php esc_html_e( 'Badge (optional)', 'kana-mud-resort' ); ?></label><br />
