@@ -80,7 +80,7 @@ function kmr_register_post_types(): void {
 		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 23,
 		'capability_type'     => 'post',
-		'supports'            => [ 'title', 'page-attributes' ],
+		'supports'            => [ 'title', 'editor', 'page-attributes' ],
 	];
 	register_post_type( 'kmr_amenity', $amenities );
 

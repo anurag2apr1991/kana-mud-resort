@@ -156,8 +156,11 @@ function kmr_render_amenity_meta_box( WP_Post $post ): void {
 		<input type="text" class="widefat" id="kmr_icon_key" name="kmr_icon_key" value="<?php echo esc_attr( (string) $icon_key ); ?>" placeholder="leaf, mountain, wifi, food, ..." />
 	</p>
 	<p>
-		<label for="kmr_amenity_description"><?php esc_html_e( 'Description', 'kana-mud-resort' ); ?></label><br />
-		<textarea class="widefat" rows="4" id="kmr_amenity_description" name="kmr_amenity_description"><?php echo esc_textarea( (string) $description ); ?></textarea>
+		<label for="kmr_amenity_description"><strong><?php esc_html_e( 'Short description (optional)', 'kana-mud-resort' ); ?></strong></label><br />
+		<textarea class="widefat" rows="3" id="kmr_amenity_description" name="kmr_amenity_description" placeholder="<?php esc_attr_e( 'Plain text only; used only if the main content above is empty', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
+	</p>
+	<p class="description">
+		<?php esc_html_e( 'Use the main editor for long text: paragraphs, lists, and links. The short description field is a fallback when the editor is empty.', 'kana-mud-resort' ); ?>
 	</p>
 	<?php
 }

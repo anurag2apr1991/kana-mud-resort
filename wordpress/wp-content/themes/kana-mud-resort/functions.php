@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'KMR_VERSION', '1.0.9' );
+define( 'KMR_VERSION', '1.0.10' );
 define( 'KMR_DIR', get_template_directory() );
 define( 'KMR_URI', get_template_directory_uri() );
 
