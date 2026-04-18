@@ -51,22 +51,32 @@ $places = get_posts(
 						$pid      = (int) $p->ID;
 						$dist     = (string) get_post_meta( $pid, '_kmr_distance_label', true );
 						$desc     = (string) get_post_meta( $pid, '_kmr_description', true );
+						$body     = $p->post_content ? apply_filters( 'the_content', $p->post_content ) : '';
 						$thumb_id = (int) get_post_thumbnail_id( $pid );
-						$src      = kmr_image_url( $thumb_id, 'medium' );
+						$src      = kmr_image_url( $thumb_id, 'medium_large' );
+						if ( ! $src ) {
+							$src = kmr_image_url( $thumb_id, 'medium' );
+						}
 						?>
-						<article class="kmr-nearby-card overflow-hidden rounded-2xl bg-white ring-1 ring-stone-200/80 <?php echo $i >= 3 ? 'hidden' : ''; ?>" data-kmr-nearby-index="<?php echo esc_attr( (string) $i ); ?>">
-							<div class="relative aspect-[16/10] w-full bg-stone-100">
+						<article class="kmr-nearby-card flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-stone-200/80 <?php echo $i >= 3 ? 'hidden' : ''; ?>" data-kmr-nearby-index="<?php echo esc_attr( (string) $i ); ?>">
+							<div class="relative aspect-[16/10] w-full shrink-0 bg-stone-100">
 								<?php if ( $src ) : ?>
 									<img src="<?php echo esc_url( $src ); ?>" alt="<?php echo esc_attr( get_the_title( $p ) ); ?>" class="h-full w-full object-cover" loading="lazy" decoding="async" />
 								<?php else : ?>
-									<div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-200 via-stone-100 to-stone-200 text-sm font-medium text-stone-500"><?php esc_html_e( 'Place image coming soon', 'kana-mud-resort' ); ?></div>
+									<div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-200 via-stone-100 to-stone-200 text-sm font-medium text-stone-500"><?php esc_html_e( 'Set Featured image in admin', 'kana-mud-resort' ); ?></div>
 								<?php endif; ?>
 							</div>
-							<div class="p-5">
-								<p class="text-sm font-semibold uppercase tracking-wide text-emerald-800"><?php echo esc_html( $dist ); ?></p>
-								<h3 class="mt-2 font-serif text-xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
-								<?php if ( $desc ) : ?>
-									<p class="mt-2 text-sm text-stone-600"><?php echo esc_html( $desc ); ?></p>
+							<div class="flex flex-1 flex-col p-5">
+								<?php if ( $dist !== '' ) : ?>
+									<p class="text-xs font-semibold uppercase tracking-wide text-emerald-800"><?php echo esc_html( $dist ); ?></p>
+								<?php endif; ?>
+								<h3 class="mt-1 font-serif text-xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
+								<?php if ( $body ) : ?>
+									<div class="kmr-nearby-card-text mt-3 flex-1 text-sm leading-relaxed text-stone-600 [&_a]:text-emerald-700 [&_a]:underline [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:ml-4 [&_ul]:list-disc">
+										<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core the_content filters. ?>
+									</div>
+								<?php elseif ( $desc !== '' ) : ?>
+									<p class="mt-3 flex-1 text-sm leading-relaxed text-stone-600"><?php echo esc_html( $desc ); ?></p>
 								<?php endif; ?>
 							</div>
 						</article>

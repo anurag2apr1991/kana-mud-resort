@@ -127,13 +127,16 @@ function kmr_render_nearby_meta_box( WP_Post $post ): void {
 	$distance    = get_post_meta( $post->ID, '_kmr_distance_label', true );
 	$description = get_post_meta( $post->ID, '_kmr_description', true );
 	?>
-	<p>
-		<label for="kmr_distance_label"><?php esc_html_e( 'Distance label (e.g. 12 km)', 'kana-mud-resort' ); ?></label><br />
-		<input type="text" class="widefat" id="kmr_distance_label" name="kmr_distance_label" value="<?php echo esc_attr( (string) $distance ); ?>" />
+	<p class="description" style="margin-top:0;">
+		<?php esc_html_e( 'Homepage card: set the Featured image (right sidebar) for the photo. Title = place name. Use the main editor above for the card text, or the short description below if you prefer plain text.', 'kana-mud-resort' ); ?>
 	</p>
 	<p>
-		<label for="kmr_nearby_description"><?php esc_html_e( 'Description', 'kana-mud-resort' ); ?></label><br />
-		<textarea class="widefat" rows="4" id="kmr_nearby_description" name="kmr_nearby_description"><?php echo esc_textarea( (string) $description ); ?></textarea>
+		<label for="kmr_distance_label"><strong><?php esc_html_e( 'Distance label', 'kana-mud-resort' ); ?></strong></label><br />
+		<input type="text" class="widefat" id="kmr_distance_label" name="kmr_distance_label" value="<?php echo esc_attr( (string) $distance ); ?>" placeholder="<?php esc_attr_e( 'e.g. 12 km', 'kana-mud-resort' ); ?>" />
+	</p>
+	<p>
+		<label for="kmr_nearby_description"><strong><?php esc_html_e( 'Short description (optional)', 'kana-mud-resort' ); ?></strong></label><br />
+		<textarea class="widefat" rows="4" id="kmr_nearby_description" name="kmr_nearby_description" placeholder="<?php esc_attr_e( 'Used only if the main content is empty', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
 	</p>
 	<?php
 }
@@ -284,4 +287,43 @@ function kmr_sanitize_int_meta( $v ): string {
 	}
 	$n = (int) $v;
 	return (string) max( 0, $n );
+}
+
+add_filter( 'manage_kmr_nearby_posts_columns', 'kmr_nearby_admin_columns' );
+add_action( 'manage_kmr_nearby_posts_custom_column', 'kmr_nearby_admin_column', 10, 2 );
+
+/**
+ * Show card thumbnail in Nearby places list table.
+ *
+ * @param string[] $columns Columns.
+ * @return string[]
+ */
+function kmr_nearby_admin_columns( array $columns ): array {
+	if ( ! isset( $columns['cb'] ) ) {
+		return $columns;
+	}
+	$cb = $columns['cb'];
+	unset( $columns['cb'] );
+	return array_merge(
+		[
+			'cb'                => $cb,
+			'kmr_nearby_thumb' => __( 'Card image', 'kana-mud-resort' ),
+		],
+		$columns
+	);
+}
+
+/**
+ * @param string $column Column id.
+ * @param int    $post_id Post ID.
+ */
+function kmr_nearby_admin_column( string $column, int $post_id ): void {
+	if ( 'kmr_nearby_thumb' !== $column ) {
+		return;
+	}
+	if ( has_post_thumbnail( $post_id ) ) {
+		echo get_the_post_thumbnail( $post_id, [ 80, 54 ], [ 'style' => 'border-radius:4px;object-fit:cover;' ] );
+	} else {
+		echo '<span class="dashicons dashicons-format-image" style="color:#c3c4c7;" aria-hidden="true"></span>';
+	}
 }

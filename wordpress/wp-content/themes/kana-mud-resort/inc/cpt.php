@@ -63,7 +63,7 @@ function kmr_register_post_types(): void {
 		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 22,
 		'capability_type'     => 'post',
-		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
+		'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
 	];
 	register_post_type( 'kmr_nearby', $nearby );
 

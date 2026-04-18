@@ -314,6 +314,8 @@ function kmr_render_options_page(): void {
 		<form method="post" action="options.php" id="kmr-resort-home-form">
 			<?php settings_fields( 'kmr_options_group' ); ?>
 
+			<?php kmr_render_quick_add_banner( 'resort-home' ); ?>
+
 			<ul class="ul-disc" style="list-style:disc;margin:0 0 1.25em 1.25em;max-width:52rem;">
 				<li><a href="#kmr-section-hero"><?php esc_html_e( 'Hero', 'kana-mud-resort' ); ?></a></li>
 				<li><a href="#kmr-section-booking"><?php esc_html_e( 'Booking bar', 'kana-mud-resort' ); ?></a></li>

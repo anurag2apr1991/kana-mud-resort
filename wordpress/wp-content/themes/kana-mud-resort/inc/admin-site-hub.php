@@ -158,6 +158,70 @@ function kmr_sort_resort_site_submenu(): void {
 add_action( 'admin_notices', 'kmr_notice_pages_not_home_sections' );
 
 /**
+ * “Add new” links for each content type (separate posts, not theme labels).
+ *
+ * @return array<int, array{label:string,url:string}>
+ */
+function kmr_quick_add_content_links(): array {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return [];
+	}
+	$map = [
+		'kmr_room'        => __( 'Add room', 'kana-mud-resort' ),
+		'kmr_photo'       => __( 'Add gallery photo', 'kana-mud-resort' ),
+		'kmr_nearby'      => __( 'Add nearby place', 'kana-mud-resort' ),
+		'kmr_amenity'     => __( 'Add amenity', 'kana-mud-resort' ),
+		'kmr_offer'       => __( 'Add offer', 'kana-mud-resort' ),
+		'kmr_testimonial' => __( 'Add guest quote', 'kana-mud-resort' ),
+	];
+	$out = [];
+	foreach ( $map as $pt => $label ) {
+		if ( ! post_type_exists( $pt ) ) {
+			continue;
+		}
+		$out[] = [
+			'label' => $label,
+			'url'   => admin_url( 'post-new.php?post_type=' . rawurlencode( $pt ) ),
+		];
+	}
+	if ( current_user_can( 'upload_files' ) ) {
+		$out[] = [
+			'label' => __( 'Upload media', 'kana-mud-resort' ),
+			'url'   => admin_url( 'media-new.php' ),
+		];
+	}
+	return $out;
+}
+
+/**
+ * Prominent “add content” strip so users do not stay only on label fields (Resort Home).
+ *
+ * @param string $context hub|resort-home.
+ */
+function kmr_render_quick_add_banner( string $_context = 'hub' ): void {
+	$links = kmr_quick_add_content_links();
+	if ( ! count( $links ) ) {
+		return;
+	}
+	?>
+	<div class="notice notice-success" style="margin:12px 0 16px;border-left-color:#00a32a;padding:12px 14px;max-width:1200px;">
+		<p style="margin:0 0 10px;font-weight:600;">
+			<?php esc_html_e( 'To show more rooms, amenities, offers, or guest quotes on the site, add separate entries — this is not done with the heading fields below alone.', 'kana-mud-resort' ); ?>
+		</p>
+		<p style="margin:0 0 6px;font-size:13px;color:#50575e;">
+			<?php esc_html_e( 'Use “Add …” to open a new item; publish it when ready. Repeat for each room, amenity, etc.', 'kana-mud-resort' ); ?>
+		</p>
+		<p style="margin:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+			<?php foreach ( $links as $item ) : ?>
+				<a class="button button-small button-primary" href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a>
+			<?php endforeach; ?>
+			<a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=kmr-site-hub' ) ); ?>"><?php esc_html_e( 'Section map', 'kana-mud-resort' ); ?></a>
+		</p>
+	</div>
+	<?php
+}
+
+/**
  * Warn when editing “Pages” — layout/images for the landing page are not stored here.
  */
 function kmr_notice_pages_not_home_sections(): void {
@@ -190,7 +254,7 @@ function kmr_notice_pages_not_home_sections(): void {
 }
 
 /**
- * @return array<int, array{slug:string,title:string,desc:string,edit:string,cap?:string}>
+ * @return array<int, array{slug:string,title:string,desc:string,edit:string,cap?:string,post_type?:string,add_new_url?:string}>
  */
 function kmr_site_hub_sections(): array {
 	$base  = admin_url( 'themes.php?page=kmr-home-settings' );
@@ -205,47 +269,53 @@ function kmr_site_hub_sections(): array {
 			'cap'   => 'manage_options',
 		],
 		[
-			'slug'  => 'rooms',
-			'title' => __( 'Rooms', 'kana-mud-resort' ),
-			'desc'  => __( 'Room cards: title, description, featured image, price, extra gallery IDs.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_room' ),
+			'slug'       => 'rooms',
+			'title'      => __( 'Rooms', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per room (published rooms appear as cards). Title, description, featured image, prices, optional gallery IDs.', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_room' ),
+			'post_type'  => 'kmr_room',
 		],
 		[
-			'slug'  => 'gallery',
-			'title' => __( 'Gallery', 'kana-mud-resort' ),
-			'desc'  => __( 'Featured image + caption for each photo in the gallery strip.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_photo' ),
+			'slug'       => 'gallery',
+			'title'      => __( 'Gallery', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per photo; set featured image and caption. Order uses the list order.', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_photo' ),
+			'post_type'  => 'kmr_photo',
 		],
 		[
-			'slug'  => 'nearby',
-			'title' => __( 'Nearby places', 'kana-mud-resort' ),
-			'desc'  => __( 'Places to visit: image, distance label, description.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_nearby' ),
+			'slug'       => 'nearby',
+			'title'      => __( 'Nearby places', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per place (image, distance label, description).', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_nearby' ),
+			'post_type'  => 'kmr_nearby',
 		],
 		[
 			'slug'  => 'experience',
 			'title' => __( 'Experience & amenities (headings)', 'kana-mud-resort' ),
-			'desc'  => __( 'Eyebrow, title, and intro paragraph above the amenities grid.', 'kana-mud-resort' ),
+			'desc'  => __( 'Eyebrow, title, and intro paragraph above the amenities grid (labels only). For each amenity row, use Amenities (items).', 'kana-mud-resort' ),
 			'edit'  => $base . '#kmr-section-amenities-intro',
 			'cap'   => 'manage_options',
 		],
 		[
-			'slug'  => 'amenities',
-			'title' => __( 'Amenities (items)', 'kana-mud-resort' ),
-			'desc'  => __( 'Each amenity card: title, icon key, description.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_amenity' ),
+			'slug'       => 'amenities',
+			'title'      => __( 'Amenities (items)', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per amenity card (title, icon key, description).', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_amenity' ),
+			'post_type'  => 'kmr_amenity',
 		],
 		[
-			'slug'  => 'offers',
-			'title' => __( 'Offers & packages', 'kana-mud-resort' ),
-			'desc'  => __( 'Promotions with optional image, badge, and valid-until date.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_offer' ),
+			'slug'       => 'offers',
+			'title'      => __( 'Offers & packages', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per offer (image, badge, dates, description).', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_offer' ),
+			'post_type'  => 'kmr_offer',
 		],
 		[
-			'slug'  => 'guests',
-			'title' => __( 'Guests', 'kana-mud-resort' ),
-			'desc'  => __( 'Quotes, author line, rating, optional photo.', 'kana-mud-resort' ),
-			'edit'  => admin_url( 'edit.php?post_type=kmr_testimonial' ),
+			'slug'       => 'guests',
+			'title'      => __( 'Guests', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per testimonial (quote, author, rating, optional photo).', 'kana-mud-resort' ),
+			'edit'       => admin_url( 'edit.php?post_type=kmr_testimonial' ),
+			'post_type'  => 'kmr_testimonial',
 		],
 		[
 			'slug'  => 'booking',
@@ -269,10 +339,12 @@ function kmr_site_hub_sections(): array {
 			'cap'   => 'manage_options',
 		],
 		[
-			'slug'  => 'media',
-			'title' => __( 'Media library', 'kana-mud-resort' ),
-			'desc'  => __( 'Upload images, then use them in Resort Home or as featured images.', 'kana-mud-resort' ),
-			'edit'  => $media,
+			'slug'        => 'media',
+			'title'       => __( 'Media library', 'kana-mud-resort' ),
+			'desc'        => __( 'Upload files here, then pick them as featured images or in the hero.', 'kana-mud-resort' ),
+			'edit'        => $media,
+			'cap'         => 'upload_files',
+			'add_new_url' => admin_url( 'media-new.php' ),
 		],
 	];
 }
@@ -296,15 +368,26 @@ function kmr_render_site_hub(): void {
 				<strong><?php esc_html_e( 'This theme is one scrolling page, but content is not edited like a single HTML file.', 'kana-mud-resort' ); ?></strong>
 			</p>
 			<p style="margin:.5em 0;">
-				<?php esc_html_e( 'Use the boxes below — each section of the public site has its own list or settings screen. You usually do not need the block editor on Pages for the homepage layout.', 'kana-mud-resort' ); ?>
+				<?php esc_html_e( 'Sections that list rooms, photos, amenities, etc. are built from many separate posts — use “Add new” on each card or the green bar below. The “headings” fields on Appearance → Resort Home only change titles and intro text, not how many items appear.', 'kana-mud-resort' ); ?>
 			</p>
 		</div>
+
+		<?php kmr_render_quick_add_banner( 'hub' ); ?>
 
 		<div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));max-width:1200px;">
 			<?php foreach ( $sections as $row ) : ?>
 				<?php
 				$need_cap = isset( $row['cap'] ) ? $row['cap'] : 'edit_posts';
 				$can      = current_user_can( $need_cap );
+				$pt       = isset( $row['post_type'] ) ? (string) $row['post_type'] : '';
+				$add_new  = '';
+				if ( $can && ! empty( $row['add_new_url'] ) ) {
+					$add_new = (string) $row['add_new_url'];
+				} elseif ( $can && $pt !== '' && post_type_exists( $pt ) && current_user_can( 'edit_posts' ) ) {
+					$add_new = admin_url( 'post-new.php?post_type=' . rawurlencode( $pt ) );
+				}
+				$has_list   = ( $pt !== '' || ! empty( $row['add_new_url'] ?? '' ) );
+				$view_label = $has_list ? __( 'View all', 'kana-mud-resort' ) : __( 'Open settings', 'kana-mud-resort' );
 				?>
 				<div class="postbox" style="margin:0;">
 					<h2 class="hndle" style="padding:12px 14px;margin:0;border-bottom:1px solid #c3c4c7;">
@@ -312,13 +395,16 @@ function kmr_render_site_hub(): void {
 					</h2>
 					<div class="inside" style="padding:14px;">
 						<p style="margin-top:0;"><?php echo esc_html( $row['desc'] ); ?></p>
-						<p style="margin-bottom:0;">
+						<p style="margin-bottom:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
 							<?php if ( $can ) : ?>
-								<a class="button button-primary" href="<?php echo esc_url( $row['edit'] ); ?>"><?php esc_html_e( 'Edit this section', 'kana-mud-resort' ); ?></a>
+								<?php if ( $add_new !== '' ) : ?>
+									<a class="button button-primary" href="<?php echo esc_url( $add_new ); ?>"><?php esc_html_e( 'Add new', 'kana-mud-resort' ); ?></a>
+								<?php endif; ?>
+								<a class="button <?php echo $add_new ? '' : 'button-primary'; ?>" href="<?php echo esc_url( $row['edit'] ); ?>"><?php echo esc_html( $view_label ); ?></a>
 							<?php else : ?>
-								<span class="button button-disabled" aria-disabled="true"><?php esc_html_e( 'Administrator only', 'kana-mud-resort' ); ?></span>
+								<span class="button button-disabled" aria-disabled="true"><?php esc_html_e( 'No access', 'kana-mud-resort' ); ?></span>
 								<span class="description" style="display:block;margin-top:8px;">
-									<?php esc_html_e( 'Ask a site administrator to change hero text, images, booking links, and contact details.', 'kana-mud-resort' ); ?>
+									<?php esc_html_e( 'Ask an administrator if you need permission to upload media or change site-wide settings.', 'kana-mud-resort' ); ?>
 								</span>
 							<?php endif; ?>
 						</p>
