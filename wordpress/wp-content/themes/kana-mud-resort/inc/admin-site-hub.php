@@ -278,7 +278,7 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'       => 'gallery',
 			'title'      => __( 'Gallery', 'kana-mud-resort' ),
-			'desc'       => __( 'Add one entry per photo; set featured image and caption. Order uses the list order.', 'kana-mud-resort' ),
+			'desc'       => __( 'One entry per photo: featured image and optional caption. Up to six show as cards; more than six adds a slider on the homepage.', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_photo' ),
 			'post_type'  => 'kmr_photo',
 		],

@@ -115,7 +115,9 @@ function kmr_render_photo_meta_box( WP_Post $post ): void {
 		<label for="kmr_caption"><?php esc_html_e( 'Caption (optional)', 'kana-mud-resort' ); ?></label><br />
 		<input type="text" class="widefat" id="kmr_caption" name="kmr_caption" value="<?php echo esc_attr( (string) $caption ); ?>" />
 	</p>
-	<p class="description"><?php esc_html_e( 'Set the Featured Image as the photo.', 'kana-mud-resort' ); ?></p>
+	<p class="description">
+		<?php esc_html_e( 'Set the Featured Image for this card. The homepage shows up to six photos per view; if you add more, visitors can use arrows or dots to see additional pages. Clicking a photo opens a full-size zoom view.', 'kana-mud-resort' ); ?>
+	</p>
 	<?php
 }
 
@@ -319,6 +321,45 @@ function kmr_nearby_admin_columns( array $columns ): array {
  */
 function kmr_nearby_admin_column( string $column, int $post_id ): void {
 	if ( 'kmr_nearby_thumb' !== $column ) {
+		return;
+	}
+	if ( has_post_thumbnail( $post_id ) ) {
+		echo get_the_post_thumbnail( $post_id, [ 80, 54 ], [ 'style' => 'border-radius:4px;object-fit:cover;' ] );
+	} else {
+		echo '<span class="dashicons dashicons-format-image" style="color:#c3c4c7;" aria-hidden="true"></span>';
+	}
+}
+
+add_filter( 'manage_kmr_photo_posts_columns', 'kmr_photo_admin_columns' );
+add_action( 'manage_kmr_photo_posts_custom_column', 'kmr_photo_admin_column', 10, 2 );
+
+/**
+ * Show featured image in Gallery list table.
+ *
+ * @param string[] $columns Columns.
+ * @return string[]
+ */
+function kmr_photo_admin_columns( array $columns ): array {
+	if ( ! isset( $columns['cb'] ) ) {
+		return $columns;
+	}
+	$cb = $columns['cb'];
+	unset( $columns['cb'] );
+	return array_merge(
+		[
+			'cb'               => $cb,
+			'kmr_photo_thumb' => __( 'Photo', 'kana-mud-resort' ),
+		],
+		$columns
+	);
+}
+
+/**
+ * @param string $column Column id.
+ * @param int    $post_id Post ID.
+ */
+function kmr_photo_admin_column( string $column, int $post_id ): void {
+	if ( 'kmr_photo_thumb' !== $column ) {
 		return;
 	}
 	if ( has_post_thumbnail( $post_id ) ) {

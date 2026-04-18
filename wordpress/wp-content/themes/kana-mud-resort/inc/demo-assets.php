@@ -78,6 +78,7 @@ function kmr_demo_gallery_items(): array {
 		[ 'file' => 'hero-01.jpg', 'caption' => __( 'Hillside view', 'kana-mud-resort' ) ],
 		[ 'file' => 'card-01.jpg', 'caption' => __( 'Room detail', 'kana-mud-resort' ) ],
 		[ 'file' => 'card-02.jpg', 'caption' => __( 'Quiet corner', 'kana-mud-resort' ) ],
+		[ 'file' => 'gallery-01.jpg', 'caption' => __( 'Garden path', 'kana-mud-resort' ) ],
 	];
 	$out = [];
 	$i   = 0;
@@ -88,6 +89,7 @@ function kmr_demo_gallery_items(): array {
 		$out[] = [
 			'id'      => -$i,
 			'src'     => $src,
+			'full'    => $src,
 			'alt'     => $cap,
 			'caption' => $cap,
 		];

@@ -260,11 +260,63 @@
         btn.addEventListener("click", function () {
           var idx = parseInt(btn.getAttribute("data-kmr-gallery-open") || "0", 10);
           var mapped = items.map(function (it) {
-            return { src: it.src, alt: it.alt || it.caption || "Gallery image" };
+            return {
+              src: it.full || it.src,
+              alt: it.alt || it.caption || "Gallery image",
+            };
           });
           openLightbox(mapped, idx);
         });
       });
+    });
+  }
+
+  function initGallerySlider() {
+    document.querySelectorAll("[data-kmr-gallery-slider]").forEach(function (root) {
+      var track = root.querySelector(".kmr-gallery-slider-track");
+      var prev = root.querySelector(".kmr-gallery-slider-prev");
+      var next = root.querySelector(".kmr-gallery-slider-next");
+      var dots = root.querySelectorAll(".kmr-gallery-slider-dot");
+      var pages = parseInt(root.getAttribute("data-kmr-gallery-pages") || "1", 10);
+      if (!track || pages <= 1) return;
+
+      var page = 0;
+
+      function setDots() {
+        dots.forEach(function (dot, j) {
+          var on = j === page;
+          dot.setAttribute("aria-selected", on ? "true" : "false");
+          dot.classList.toggle("bg-emerald-700", on);
+          dot.classList.toggle("bg-stone-300", !on);
+        });
+      }
+
+      function go(p) {
+        page = Math.max(0, Math.min(pages - 1, p));
+        var pct = (page * 100) / pages;
+        track.style.transform = "translateX(-" + pct + "%)";
+        if (prev) prev.disabled = page === 0;
+        if (next) next.disabled = page === pages - 1;
+        setDots();
+      }
+
+      if (prev)
+        prev.addEventListener("click", function () {
+          go(page - 1);
+        });
+      if (next)
+        next.addEventListener("click", function () {
+          go(page + 1);
+        });
+
+      dots.forEach(function (dot) {
+        dot.addEventListener("click", function () {
+          var pi = parseInt(dot.getAttribute("data-kmr-gallery-page") || "0", 10);
+          go(pi);
+        });
+      });
+
+      go(0);
     });
   }
 
@@ -326,6 +378,7 @@
     initReloadScroll();
     initCarousels();
     initGalleryLightbox();
+    initGallerySlider();
     initNearby();
   });
 })();
