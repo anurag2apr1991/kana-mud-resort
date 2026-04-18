@@ -449,8 +449,8 @@ function kmr_enqueue_room_gallery_admin( string $hook_suffix ): void {
 	wp_enqueue_media();
 	wp_enqueue_style( 'dashicons' );
 	wp_enqueue_script(
-		'kmr-admin-room-gallery',
-		KMR_URI . '/assets/js/admin-room-gallery.js',
+		'kmr-admin-media-id-picker',
+		KMR_URI . '/assets/js/admin-media-id-picker.js',
 		[
 			'jquery',
 			'media-views',
@@ -471,16 +471,20 @@ function kmr_enqueue_room_gallery_admin( string $hook_suffix ): void {
 		}
 	}
 	wp_localize_script(
-		'kmr-admin-room-gallery',
-		'kmrRoomGallery',
+		'kmr-admin-media-id-picker',
+		'kmrMediaIdPickers',
 		[
-			'urls' => $urls,
-			'i18n' => [
-				'title'        => __( 'Select images for the room carousel', 'kana-mud-resort' ),
-				'button'       => __( 'Use selected images', 'kana-mud-resort' ),
-				'choose'       => __( 'Choose images…', 'kana-mud-resort' ),
-				'remove'       => __( 'Remove image from carousel', 'kana-mud-resort' ),
-				'mediaMissing' => __( 'Media library is not ready yet. Wait a moment and try again, or refresh the page.', 'kana-mud-resort' ),
+			[
+				'input'   => '#kmr_gallery_ids',
+				'preview' => '#kmr-room-gallery-preview',
+				'button'  => '#kmr-room-gallery-add',
+				'urls'    => $urls,
+				'i18n'    => [
+					'title'        => __( 'Select images for the room carousel', 'kana-mud-resort' ),
+					'button'       => __( 'Use selected images', 'kana-mud-resort' ),
+					'remove'       => __( 'Remove image from carousel', 'kana-mud-resort' ),
+					'mediaMissing' => __( 'Media library is not ready yet. Wait a moment and try again, or refresh the page.', 'kana-mud-resort' ),
+				],
 			],
 		]
 	);

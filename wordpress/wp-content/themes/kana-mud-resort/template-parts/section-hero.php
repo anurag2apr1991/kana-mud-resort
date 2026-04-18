@@ -25,7 +25,7 @@ $hero_has_media = count( kmr_parse_id_list( (string) kmr_get_option( 'hero_backg
 	<?php if ( ! $hero_has_media && count( $urls ) && current_user_can( 'manage_options' ) ) : ?>
 		<div class="absolute left-4 right-4 top-24 z-20 sm:left-6 sm:right-6 lg:left-1/2 lg:right-auto lg:w-full lg:max-w-6xl lg:-translate-x-1/2 lg:px-6">
 			<p class="rounded-2xl border border-amber-200/90 bg-amber-50/95 px-4 py-3 text-sm text-amber-950 shadow-sm backdrop-blur-sm">
-				<?php esc_html_e( 'Demo hero images are shown until you add Media Library attachment IDs under Appearance → Resort Home. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
+				<?php esc_html_e( 'Demo hero images are shown until you choose images under Appearance → Resort Home → Hero → Choose images…. This note is visible only to administrators.', 'kana-mud-resort' ); ?>
 			</p>
 		</div>
 	<?php endif; ?>

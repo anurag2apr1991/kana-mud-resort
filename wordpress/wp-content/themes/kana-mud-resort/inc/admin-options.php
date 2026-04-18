@@ -44,20 +44,42 @@ function kmr_enqueue_resort_home_admin( string $hook_suffix ): void {
 		return;
 	}
 	wp_enqueue_media();
+	wp_enqueue_style( 'dashicons' );
 	wp_enqueue_script(
-		'kmr-admin-resort-home',
-		KMR_URI . '/assets/js/admin-resort-home.js',
-		[ 'jquery' ],
+		'kmr-admin-media-id-picker',
+		KMR_URI . '/assets/js/admin-media-id-picker.js',
+		[
+			'jquery',
+			'media-views',
+		],
 		KMR_VERSION,
 		true
 	);
+	$opts     = get_option( 'kmr_options', [] );
+	$hero_csv = is_array( $opts ) && isset( $opts['hero_background_ids'] ) ? (string) $opts['hero_background_ids'] : '';
+	$hero_ids = kmr_parse_id_list( $hero_csv );
+	$urls     = [];
+	foreach ( $hero_ids as $hid ) {
+		$u = wp_get_attachment_image_url( (int) $hid, 'thumbnail' );
+		if ( $u ) {
+			$urls[ (string) $hid ] = $u;
+		}
+	}
 	wp_localize_script(
-		'kmr-admin-resort-home',
-		'kmrResortHome',
+		'kmr-admin-media-id-picker',
+		'kmrMediaIdPickers',
 		[
-			'i18n' => [
-				'heroTitle'   => __( 'Hero background images', 'kana-mud-resort' ),
-				'heroButton'  => __( 'Use selected images', 'kana-mud-resort' ),
+			[
+				'input'   => '#hero_background_ids',
+				'preview' => '#kmr-hero-bg-preview',
+				'button'  => '#kmr-hero-bg-choose',
+				'urls'    => $urls,
+				'i18n'    => [
+					'title'        => __( 'Hero background images', 'kana-mud-resort' ),
+					'button'       => __( 'Use selected images', 'kana-mud-resort' ),
+					'remove'       => __( 'Remove image', 'kana-mud-resort' ),
+					'mediaMissing' => __( 'Media library is not ready yet. Wait a moment and try again, or refresh the page.', 'kana-mud-resort' ),
+				],
 			],
 		]
 	);
@@ -358,11 +380,15 @@ function kmr_render_options_page(): void {
 				<tr>
 					<th scope="row"><label for="hero_background_ids"><?php esc_html_e( 'Hero background images', 'kana-mud-resort' ); ?></label></th>
 					<td>
+						<input type="hidden" name="kmr_options[hero_background_ids]" id="hero_background_ids" value="<?php echo esc_attr( (string) ( $opts['hero_background_ids'] ?? '' ) ); ?>" />
 						<p>
-							<button type="button" class="button" id="kmr-hero-select-images"><?php esc_html_e( 'Select images', 'kana-mud-resort' ); ?></button>
+							<button type="button" class="button button-secondary" id="kmr-hero-bg-choose">
+								<span class="dashicons dashicons-admin-media" style="vertical-align:middle;margin:-2px 4px 0 0;" aria-hidden="true"></span>
+								<?php esc_html_e( 'Choose images…', 'kana-mud-resort' ); ?>
+							</button>
 						</p>
-						<input name="kmr_options[hero_background_ids]" id="hero_background_ids" type="text" class="large-text" value="<?php echo esc_attr( $opts['hero_background_ids'] ); ?>" placeholder="12, 34, 56" />
-						<p class="description"><?php esc_html_e( 'Use “Select images” (or upload under Media → Add New), then save. Order follows your selection. Leave empty only if you want the bundled demo photos.', 'kana-mud-resort' ); ?></p>
+						<div id="kmr-hero-bg-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:flex-start;"></div>
+						<p class="description"><?php esc_html_e( 'Opens the Media Library to pick slideshow images. Order follows your selection; click × on a thumbnail to remove. Upload new files under Media → Add New first if needed. Leave empty to use the bundled demo photos until you add images.', 'kana-mud-resort' ); ?></p>
 					</td>
 				</tr>
 				<tr>
