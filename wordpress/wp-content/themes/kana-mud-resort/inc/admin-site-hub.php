@@ -306,7 +306,7 @@ function kmr_site_hub_sections(): array {
 		[
 			'slug'       => 'offers',
 			'title'      => __( 'Offers & packages', 'kana-mud-resort' ),
-			'desc'       => __( 'Add one entry per offer (image, badge, dates, description).', 'kana-mud-resort' ),
+			'desc'       => __( 'Add one entry per offer: Featured Image, title, main editor for details, optional badge and valid-until date.', 'kana-mud-resort' ),
 			'edit'       => admin_url( 'edit.php?post_type=kmr_offer' ),
 			'post_type'  => 'kmr_offer',
 		],

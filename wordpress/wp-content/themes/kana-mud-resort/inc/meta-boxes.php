@@ -174,17 +174,20 @@ function kmr_render_offer_meta_box( WP_Post $post ): void {
 	$badge       = get_post_meta( $post->ID, '_kmr_badge', true );
 	$valid_until = get_post_meta( $post->ID, '_kmr_valid_until', true );
 	?>
-	<p>
-		<label for="kmr_offer_description"><?php esc_html_e( 'Description', 'kana-mud-resort' ); ?></label><br />
-		<textarea class="widefat" rows="4" id="kmr_offer_description" name="kmr_offer_description"><?php echo esc_textarea( (string) $description ); ?></textarea>
+	<p class="description">
+		<?php esc_html_e( 'Set the Featured Image for the card photo. Use the main editor (under the title) for the full offer text — paragraphs, lists, and links. The short description below is optional plain text if the editor is empty.', 'kana-mud-resort' ); ?>
 	</p>
 	<p>
 		<label for="kmr_badge"><?php esc_html_e( 'Badge (optional)', 'kana-mud-resort' ); ?></label><br />
-		<input type="text" class="widefat" id="kmr_badge" name="kmr_badge" value="<?php echo esc_attr( (string) $badge ); ?>" />
+		<input type="text" class="widefat" id="kmr_badge" name="kmr_badge" value="<?php echo esc_attr( (string) $badge ); ?>" placeholder="<?php esc_attr_e( 'e.g. Monsoon special', 'kana-mud-resort' ); ?>" />
 	</p>
 	<p>
 		<label for="kmr_valid_until"><?php esc_html_e( 'Valid until (YYYY-MM-DD, optional)', 'kana-mud-resort' ); ?></label><br />
 		<input type="date" class="widefat" id="kmr_valid_until" name="kmr_valid_until" value="<?php echo esc_attr( (string) $valid_until ); ?>" />
+	</p>
+	<p>
+		<label for="kmr_offer_description"><strong><?php esc_html_e( 'Short description (optional)', 'kana-mud-resort' ); ?></strong></label><br />
+		<textarea class="widefat" rows="3" id="kmr_offer_description" name="kmr_offer_description" placeholder="<?php esc_attr_e( 'Plain text; used only if the main content is empty', 'kana-mud-resort' ); ?>"><?php echo esc_textarea( (string) $description ); ?></textarea>
 	</p>
 	<?php
 }
@@ -363,6 +366,45 @@ function kmr_photo_admin_columns( array $columns ): array {
  */
 function kmr_photo_admin_column( string $column, int $post_id ): void {
 	if ( 'kmr_photo_thumb' !== $column ) {
+		return;
+	}
+	if ( has_post_thumbnail( $post_id ) ) {
+		echo get_the_post_thumbnail( $post_id, [ 80, 54 ], [ 'style' => 'border-radius:4px;object-fit:cover;' ] );
+	} else {
+		echo '<span class="dashicons dashicons-format-image" style="color:#c3c4c7;" aria-hidden="true"></span>';
+	}
+}
+
+add_filter( 'manage_kmr_offer_posts_columns', 'kmr_offer_admin_columns' );
+add_action( 'manage_kmr_offer_posts_custom_column', 'kmr_offer_admin_column', 10, 2 );
+
+/**
+ * Show featured image in Offers list table.
+ *
+ * @param string[] $columns Columns.
+ * @return string[]
+ */
+function kmr_offer_admin_columns( array $columns ): array {
+	if ( ! isset( $columns['cb'] ) ) {
+		return $columns;
+	}
+	$cb = $columns['cb'];
+	unset( $columns['cb'] );
+	return array_merge(
+		[
+			'cb'              => $cb,
+			'kmr_offer_thumb' => __( 'Image', 'kana-mud-resort' ),
+		],
+		$columns
+	);
+}
+
+/**
+ * @param string $column Column id.
+ * @param int    $post_id Post ID.
+ */
+function kmr_offer_admin_column( string $column, int $post_id ): void {
+	if ( 'kmr_offer_thumb' !== $column ) {
 		return;
 	}
 	if ( has_post_thumbnail( $post_id ) ) {

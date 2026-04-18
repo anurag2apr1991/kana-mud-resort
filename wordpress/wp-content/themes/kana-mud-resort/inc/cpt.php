@@ -97,7 +97,7 @@ function kmr_register_post_types(): void {
 		'show_in_menu'        => 'kmr-site-hub',
 		'menu_position'       => 24,
 		'capability_type'     => 'post',
-		'supports'            => [ 'title', 'thumbnail', 'page-attributes' ],
+		'supports'            => [ 'title', 'editor', 'thumbnail', 'page-attributes' ],
 	];
 	register_post_type( 'kmr_offer', $offers );
 

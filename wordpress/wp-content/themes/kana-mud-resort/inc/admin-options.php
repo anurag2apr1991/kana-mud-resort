@@ -495,7 +495,7 @@ function kmr_render_options_page(): void {
 			</table>
 
 			<h2 class="title" id="kmr-section-copy-offers"><?php esc_html_e( 'Offers & packages (headings)', 'kana-mud-resort' ); ?></h2>
-			<p class="description" style="max-width:52rem;"><?php esc_html_e( 'Each offer is edited under Resort site → Offers & packages.', 'kana-mud-resort' ); ?></p>
+			<p class="description" style="max-width:52rem;"><?php esc_html_e( 'Each offer is edited under Resort site → Offers & packages (featured image + main content editor for text).', 'kana-mud-resort' ); ?></p>
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row"><label for="section_offers_eyebrow"><?php esc_html_e( 'Eyebrow', 'kana-mud-resort' ); ?></label></th>

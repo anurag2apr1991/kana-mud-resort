@@ -40,10 +40,14 @@ $off_cta     = kmr_text( 'section_offers_cta_label', __( 'Enquire now', 'kana-mu
 					<?php
 					$pid      = (int) $p->ID;
 					$desc     = (string) get_post_meta( $pid, '_kmr_description', true );
+					$body     = trim( (string) $p->post_content ) !== '' ? apply_filters( 'the_content', $p->post_content ) : '';
 					$badge    = (string) get_post_meta( $pid, '_kmr_badge', true );
 					$until    = (string) get_post_meta( $pid, '_kmr_valid_until', true );
 					$thumb_id = (int) get_post_thumbnail_id( $pid );
-					$src      = kmr_image_url( $thumb_id, 'medium' );
+					$src      = kmr_image_url( $thumb_id, 'medium_large' );
+					if ( ! $src ) {
+						$src = kmr_image_url( $thumb_id, 'medium' );
+					}
 
 					$until_fmt = '';
 					if ( $until ) {
@@ -54,19 +58,23 @@ $off_cta     = kmr_text( 'section_offers_cta_label', __( 'Enquire now', 'kana-mu
 					}
 					?>
 					<article class="flex flex-col overflow-hidden rounded-3xl ring-1 ring-stone-200/80 sm:flex-row">
-						<div class="relative aspect-[16/10] w-full bg-stone-100 sm:aspect-auto sm:w-2/5">
+						<div class="relative aspect-[16/10] w-full shrink-0 bg-stone-100 sm:aspect-auto sm:w-2/5 sm:min-h-[220px]">
 							<?php if ( $src ) : ?>
 								<img src="<?php echo esc_url( $src ); ?>" alt="<?php echo esc_attr( get_the_title( $p ) ); ?>" class="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
 							<?php else : ?>
-								<div class="flex min-h-[200px] h-full w-full items-center justify-center bg-gradient-to-br from-stone-200 via-stone-100 to-stone-200 text-sm font-medium text-stone-500"><?php esc_html_e( 'Offer image coming soon', 'kana-mud-resort' ); ?></div>
+								<div class="flex min-h-[200px] h-full w-full items-center justify-center bg-gradient-to-br from-stone-200 via-stone-100 to-stone-200 px-4 text-center text-sm font-medium text-stone-500"><?php esc_html_e( 'Set Featured image in admin', 'kana-mud-resort' ); ?></div>
 							<?php endif; ?>
 						</div>
-						<div class="flex flex-1 flex-col p-6 sm:p-8">
+						<div class="flex min-w-0 flex-1 flex-col p-6 sm:p-8">
 							<?php if ( $badge ) : ?>
 								<span class="w-fit rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-900"><?php echo esc_html( $badge ); ?></span>
 							<?php endif; ?>
 							<h3 class="mt-3 font-serif text-2xl text-stone-900"><?php echo esc_html( get_the_title( $p ) ); ?></h3>
-							<?php if ( $desc ) : ?>
+							<?php if ( $body ) : ?>
+								<div class="kmr-offer-text mt-3 text-stone-600 [&_a]:text-emerald-800 [&_a]:underline [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mb-2 [&_ul]:ml-4 [&_ul]:list-disc [&_ol]:ml-4 [&_ol]:list-decimal">
+									<?php echo $body; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core the_content filters. ?>
+								</div>
+							<?php elseif ( $desc !== '' ) : ?>
 								<p class="mt-3 text-stone-600"><?php echo esc_html( $desc ); ?></p>
 							<?php endif; ?>
 							<?php if ( $until_fmt ) : ?>
