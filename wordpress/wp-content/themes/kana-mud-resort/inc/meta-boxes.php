@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 add_action( 'add_meta_boxes', 'kmr_add_meta_boxes' );
 add_action( 'save_post', 'kmr_save_meta_boxes', 10, 2 );
+add_action( 'admin_enqueue_scripts', 'kmr_enqueue_room_gallery_admin', 20 );
 
 /**
  * Register meta boxes.
@@ -96,13 +97,21 @@ function kmr_render_room_meta_box( WP_Post $post ): void {
 		<label for="kmr_capacity"><?php esc_html_e( 'Capacity (guests)', 'kana-mud-resort' ); ?></label><br />
 		<input type="number" min="1" class="small-text" id="kmr_capacity" name="kmr_capacity" value="<?php echo esc_attr( (string) ( $capacity !== '' && $capacity !== null ? $capacity : '2' ) ); ?>" />
 	</p>
-	<p>
-		<label for="kmr_gallery_ids"><strong><?php esc_html_e( 'More room photos (carousel)', 'kana-mud-resort' ); ?></strong></label><br />
-		<input type="text" class="widefat" id="kmr_gallery_ids" name="kmr_gallery_ids" value="<?php echo esc_attr( (string) $gallery_ids ); ?>" placeholder="12, 34, 56" />
-	</p>
-	<p class="description">
-		<?php esc_html_e( 'All photos for the card carousel go here: set the Featured Image (first slide), then add Media Library attachment IDs above for extra slides. Do not insert images in the main editor — they would duplicate below the price; the editor is for text only (excerpt = short line under the title, main content = extra paragraphs).', 'kana-mud-resort' ); ?>
-	</p>
+	<div id="kmr-room-gallery-root">
+		<p>
+			<strong><?php esc_html_e( 'More room photos (carousel)', 'kana-mud-resort' ); ?></strong>
+		</p>
+		<input type="hidden" id="kmr_gallery_ids" name="kmr_gallery_ids" value="<?php echo esc_attr( (string) $gallery_ids ); ?>" />
+		<p>
+			<button type="button" class="button button-secondary" id="kmr-room-gallery-add">
+				<?php esc_html_e( 'Add images to carousel', 'kana-mud-resort' ); ?>
+			</button>
+		</p>
+		<div id="kmr-room-gallery-preview" class="kmr-room-gallery-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:flex-start;"></div>
+		<p class="description">
+			<?php esc_html_e( 'Set the Featured Image as the first slide, then click “Add images to carousel” to choose additional photos from the Media Library (order follows your selection). Remove a thumbnail to drop it from the carousel. Do not insert images in the main editor — use excerpt for a short line and the editor for extra text only.', 'kana-mud-resort' ); ?>
+		</p>
+	</div>
 	<?php
 }
 
@@ -414,4 +423,53 @@ function kmr_offer_admin_column( string $column, int $post_id ): void {
 	} else {
 		echo '<span class="dashicons dashicons-format-image" style="color:#c3c4c7;" aria-hidden="true"></span>';
 	}
+}
+
+/**
+ * Media picker for room carousel image IDs (edit screen only).
+ *
+ * @param string $hook_suffix Current admin page.
+ */
+function kmr_enqueue_room_gallery_admin( string $hook_suffix ): void {
+	if ( 'post.php' !== $hook_suffix && 'post-new.php' !== $hook_suffix ) {
+		return;
+	}
+	$screen = get_current_screen();
+	if ( ! $screen || 'kmr_room' !== $screen->post_type ) {
+		return;
+	}
+	wp_enqueue_media();
+	wp_enqueue_script(
+		'kmr-admin-room-gallery',
+		KMR_URI . '/assets/js/admin-room-gallery.js',
+		[ 'jquery' ],
+		KMR_VERSION,
+		true
+	);
+	$ids  = [];
+	$pget = isset( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0;
+	if ( $pget > 0 ) {
+		$ids = kmr_parse_id_list( (string) get_post_meta( $pget, '_kmr_gallery_ids', true ) );
+	}
+	$urls = [];
+	foreach ( $ids as $id ) {
+		$u = wp_get_attachment_image_url( (int) $id, 'thumbnail' );
+		if ( $u ) {
+			$urls[ (string) $id ] = $u;
+		}
+	}
+	wp_localize_script(
+		'kmr-admin-room-gallery',
+		'kmrRoomGallery',
+		[
+			'urls' => $urls,
+			'i18n' => [
+				'title'        => __( 'Select images for the room carousel', 'kana-mud-resort' ),
+				'button'       => __( 'Use selected images', 'kana-mud-resort' ),
+				'add'          => __( 'Add images to carousel', 'kana-mud-resort' ),
+				'remove'       => __( 'Remove image from carousel', 'kana-mud-resort' ),
+				'mediaMissing' => __( 'Media library is not ready yet. Wait a moment and try again, or refresh the page.', 'kana-mud-resort' ),
+			],
+		]
+	);
 }
