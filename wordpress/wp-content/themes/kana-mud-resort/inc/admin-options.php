@@ -155,9 +155,11 @@ function kmr_default_options(): array {
 
 		'section_contact_eyebrow'            => __( 'Visit', 'kana-mud-resort' ),
 		'section_contact_title'              => __( 'Contact & location', 'kana-mud-resort' ),
-		'section_contact_intro'              => __( 'Reach us by phone or email, find directions below, and plan your arrival with confidence.', 'kana-mud-resort' ),
+		'section_contact_intro'              => __( 'Reach us by phone or email, then use the map below for directions.', 'kana-mud-resort' ),
+		'section_contact_details_heading'    => __( 'Contact details', 'kana-mud-resort' ),
+		'section_contact_map_heading'        => __( 'Location', 'kana-mud-resort' ),
 		'section_contact_address_placeholder' => __( 'Address details will appear here soon.', 'kana-mud-resort' ),
-		'section_contact_map_placeholder'    => __( 'Map preview is not available yet. Use the address on the left for directions.', 'kana-mud-resort' ),
+		'section_contact_map_placeholder'    => __( 'Add a Google Maps embed under Contact & map → Map embed URL or iframe HTML.', 'kana-mud-resort' ),
 		'section_contact_label_address'      => __( 'Address', 'kana-mud-resort' ),
 		'section_contact_label_phone'        => __( 'Phone', 'kana-mud-resort' ),
 		'section_contact_label_email'        => __( 'Email', 'kana-mud-resort' ),
@@ -257,6 +259,7 @@ function kmr_sanitize_options( $input ): array {
 		'section_offers_cta_label',
 		'section_testimonials_eyebrow', 'section_testimonials_title',
 		'section_contact_eyebrow', 'section_contact_title',
+		'section_contact_details_heading', 'section_contact_map_heading',
 		'section_contact_label_address', 'section_contact_label_phone', 'section_contact_label_email', 'section_contact_label_hours',
 		'footer_brand_name',
 	];
@@ -549,6 +552,20 @@ function kmr_render_options_page(): void {
 				<tr>
 					<th scope="row"><label for="section_contact_intro"><?php esc_html_e( 'Intro paragraph', 'kana-mud-resort' ); ?></label></th>
 					<td><textarea name="kmr_options[section_contact_intro]" id="section_contact_intro" class="large-text" rows="2"><?php echo esc_textarea( $opts['section_contact_intro'] ); ?></textarea></td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="section_contact_details_heading"><?php esc_html_e( 'First block: heading (address & phone)', 'kana-mud-resort' ); ?></label></th>
+					<td>
+						<input name="kmr_options[section_contact_details_heading]" id="section_contact_details_heading" type="text" class="large-text" value="<?php echo esc_attr( $opts['section_contact_details_heading'] ?? '' ); ?>" />
+						<p class="description"><?php esc_html_e( 'Shown above the address and phone paragraph. Leave blank to hide.', 'kana-mud-resort' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="section_contact_map_heading"><?php esc_html_e( 'Second block: heading (map)', 'kana-mud-resort' ); ?></label></th>
+					<td>
+						<input name="kmr_options[section_contact_map_heading]" id="section_contact_map_heading" type="text" class="large-text" value="<?php echo esc_attr( $opts['section_contact_map_heading'] ?? '' ); ?>" />
+						<p class="description"><?php esc_html_e( 'Shown above the Google Map. Leave blank to hide.', 'kana-mud-resort' ); ?></p>
+					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="section_contact_address_placeholder"><?php esc_html_e( 'Placeholder when address is empty', 'kana-mud-resort' ); ?></label></th>
